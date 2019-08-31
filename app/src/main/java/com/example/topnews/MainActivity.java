@@ -19,20 +19,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.Intent;
-import android.os.StrictMode;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -310,10 +300,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            Log.d(NAVI_TAG,"Gallery");
-        } else if (id == R.id.nav_slideshow) {
-            Log.d(NAVI_TAG,"SlideShow");
+        } else if (id == R.id.nav_favorite) {
+            Log.d(NAVI_TAG,"Favorite");
+            Intent intent = new Intent();
+            intent.setClass(getBaseContext(), FavoriteActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_history) {
+            Log.d(NAVI_TAG,"History");
+            Intent intent = new Intent();
+            intent.setClass(getBaseContext(), HistoryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_tools) {
             Log.d(NAVI_TAG, "Tools");
         } else if (id == R.id.nav_share) {

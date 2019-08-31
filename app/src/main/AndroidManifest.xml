@@ -31,6 +31,8 @@
         <activity android:name=".ChannelActivity"/>
         <activity android:name=".SearchActivity"/>
         <activity android:name=".SearchResultActivity"/>
+        <activity android:name=".FavoriteActivity"/>
+        <activity android:name=".HistoryActivity"/>
     </application>
 
 </manifest>

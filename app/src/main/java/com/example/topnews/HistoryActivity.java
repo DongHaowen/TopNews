@@ -1,50 +1,49 @@
 package com.example.topnews;
 
-import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Adapter;
+import android.widget.TextView;
 
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
-import com.example.topnews.bean.Category;
+import com.example.topnews.fragment.RecordFragment;
 import com.example.topnews.fragment.ResultFragment;
+import com.example.topnews.utils.RecordAdpter;
 
 import java.util.ArrayList;
 
-public class SearchResultActivity extends AppCompatActivity {
-
-    ViewPager viewPager;
-
-    private ArrayList<Category> userChannelList;
+public class HistoryActivity extends AppCompatActivity {
     private ArrayList<Fragment> fragments = new ArrayList<>();
 
-    final static int REQUEST_CODE = 1;
-
-    private String keywords;
+    private ViewPager viewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_record);
-        keywords = getIntent().getStringExtra("keywords");
-
         initView();
     }
 
     private void initView() {
         viewPager = findViewById(R.id.result_view_pager);
         viewPager.setCurrentItem(0);
+        TextView title = findViewById(R.id.record_title);
+        title.setText("History");
         initFragment();
     }
 
     private void initFragment() {
         fragments.clear();
-        Bundle data = new Bundle();
-        data.putString("keywords", keywords);
-        ResultFragment newsFragment = new ResultFragment();
-        newsFragment.setArguments(data);
+        RecordAdpter adpter = new RecordAdpter(MainActivity.history);
+        adpter.setStep(-1);
+        adpter.setStart(MainActivity.history.size()-1);
+        RecordFragment newsFragment = new RecordFragment();
+        newsFragment.setAdapter(adpter);
         fragments.add(newsFragment);
         NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);

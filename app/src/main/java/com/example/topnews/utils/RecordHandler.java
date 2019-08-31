@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.Vector;
 
 public class RecordHandler {
-    Set<String> records  = new HashSet<>();
+    Vector<String> records  = new Vector<>();
     private String home = "/data/user/0/com.example.topnews/cache/";
     private File recordFile;
 
@@ -34,7 +34,7 @@ public class RecordHandler {
 
     public void add(final String newsID){
         if(records.contains(newsID)) return;
-        Log.d("Record Add", newsID);
+        // Log.d("Record Add", newsID);
         records.add(newsID);
     }
     public void remove(final String newsID){
@@ -46,7 +46,7 @@ public class RecordHandler {
             recordFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(recordFile));
             for (String value: records){
-                Log.d("Record Save.",value);
+                // Log.d("Record Save.",value);
                 writer.write( value + "\n");
             }
             writer.close();
@@ -57,7 +57,7 @@ public class RecordHandler {
     public void load(){
         try {
             if(!recordFile.exists()){
-                Log.d("Record Error","File Missing.");
+                // Log.d("Record Error","File Missing.");
                 return;
             }
             BufferedReader reader = new BufferedReader(new FileReader(recordFile));
@@ -73,5 +73,9 @@ public class RecordHandler {
     }
     public boolean has(final String newsID){
         return records.contains(newsID);
+    }
+
+    public int size(){
+        return records.size();
     }
 }
