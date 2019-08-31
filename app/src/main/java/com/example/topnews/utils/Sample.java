@@ -1,7 +1,5 @@
 package com.example.topnews.utils;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +20,6 @@ public class Sample {
                     listNew.add(list.get(random));
                 }
             }
-            Log.d("NewsFragment", "createRandomList: " + map.keySet());
             return listNew;
         }
     }

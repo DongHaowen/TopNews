@@ -13,7 +13,6 @@ import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
 import com.example.topnews.helper.ItemDragHelperCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelActivity extends AppCompatActivity {

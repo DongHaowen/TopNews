@@ -73,12 +73,6 @@ public class ImageHandler {
                 }
             }
         };
-        try {
-            NewsActivity newsActivity = (NewsActivity) context;
-            newsActivity.setReceiver(receiver);
-        } catch (Exception e){
-
-        }
         context.registerReceiver(receiver,filter);
     }
 
@@ -90,7 +84,12 @@ public class ImageHandler {
             return -1;
         }
         Log.d("Downloading:",newsID + "/" + dst);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(src.trim()));
+        DownloadManager.Request request;
+        try {
+            request = new DownloadManager.Request(Uri.parse(src.trim()));
+        } catch (Exception e){
+            return -1;
+        }
         request.setTitle(src.trim());
         request.setDescription(src.trim());
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);

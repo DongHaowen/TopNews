@@ -1,5 +1,7 @@
 package com.example.topnews.utils;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,24 +16,23 @@ import com.google.gson.GsonBuilder;
 
 
 public class FileHandler {
-	final static String home = "/data/user/0/com.tech.oddnews/files/";
+	final static String home = "/data/user/0/com.example.topnews/files/";
 
-	public void createNewsDir(final String newsID){
-		if(newsCached(newsID)) return;
-		File dir = new File(getAbsPath(newsID));
-		dir.mkdir();
+	public FileHandler(){
+		if(!new File(home).exists())
+			new File(home).mkdirs();
 	}
 
 	public boolean newsCached(final String newsID){
-		return exists(getAbsPath(newsID));
+		return exists(newsID);
 	}
 
-	public News load(final String name) throws FileNotFoundException {
+	public News load(final String newsID) throws FileNotFoundException {
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.create();
-		File file = new File(name);
+		File file = new File(getAbsPath(newsID));
 		if(!file.exists()) return null;
-		BufferedReader buffer = new BufferedReader(new FileReader(name));
+		BufferedReader buffer = new BufferedReader(new FileReader(file));
 		News news = gson.fromJson(buffer, News.class);
 		return news;
 	}
@@ -39,24 +40,25 @@ public class FileHandler {
 	public void store(final News news) throws IOException {
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.create();
-		String name = getAbsPath(news.newsID);
-		File file = new File(name);
-		if(!file.exists()) file.createNewFile();
-		BufferedWriter buffer = new BufferedWriter(new FileWriter(name));
+		String name = getAbsPath(news.newsID );
+		File file = new File(getAbsPath(news.newsID));
+		// if(!file.exists()) file.createNewFile();
+		BufferedWriter buffer = new BufferedWriter(new FileWriter(file));
 		buffer.write(gson.toJson(news));
 		buffer.close();
 	}
 	
-	public boolean exists(final String name) {
+	public boolean exists(final String newID) {
 		try {
-			File file = new File(name);
-			return file == null;
+			File file = new File(getAbsPath(newID));
+			return file.exists();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	private static String getAbsPath(final String path){
-		return home + path;
+	private static String getAbsPath(final String newsID){
+		return home + newsID+".json";
 	}
 }

@@ -7,6 +7,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,12 +18,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.topnews.MainActivity;
 import com.example.topnews.R;
 import com.example.topnews.bean.Category;
 import com.example.topnews.helper.OnDragVHListener;
 import com.example.topnews.helper.OnItemMoveListener;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * 拖拽排序 + 增删
@@ -464,6 +467,13 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
      */
     private void cancelEditMode(RecyclerView parent) {
         isEditMode = false;
+
+        Log.d("SectionUpdate","Update");
+        Vector<String> has = new Vector<>();
+        for (Category category: mMyChannelItems){
+            has.add(category.name);
+        }
+        MainActivity.saver.updateSection(has);
 
         int visibleChildCount = parent.getChildCount();
         for (int i = 0; i < visibleChildCount; i++) {

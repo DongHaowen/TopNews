@@ -1,5 +1,6 @@
 package com.example.topnews;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -26,7 +27,9 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String string) {
-
+                Intent intent = new Intent();
+                intent.putExtra("Keywords", string);
+                intent.setClass(getBaseContext(), NewsActivity.class);
             }
         });
 

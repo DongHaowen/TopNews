@@ -38,14 +38,15 @@ public class News {
 	boolean mapped = false;
 	Map<String, Double> scoreMap;
 	Map<String, HyperLink> linkMap;
-	
+
 	public String[] getImage() {
 		if(image.equals("[]")) return null;
-		try {
-			String[] url = image.substring(1,image.length()-1).split(",");
+		if(image.contains(",")) {
+			String[] url = image.substring(1, image.length() - 1).split("[,]");
 			return url;
-		} catch (Exception e) {
-			return null;
+		}
+		else {
+			return new String[]{image.substring(1, image.length() - 1)};
 		}
 	}
 	

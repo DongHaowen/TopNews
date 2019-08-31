@@ -45,6 +45,8 @@ public class NewsFragment extends Fragment {
     private TextView notify_view_text;
     int moreTimes = 0;
 
+    RefreshLayout refreshLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -102,18 +104,18 @@ public class NewsFragment extends Fragment {
         notify_view_text = view.findViewById(R.id.notify_view_text);
 
         itemTextView.setText(text);
-        final RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+//                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
                 refreshData();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+//                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 getMoreData();
             }
         });
@@ -128,13 +130,20 @@ public class NewsFragment extends Fragment {
                 serverHandler.setSize(100);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
-                page = serverHandler.getPage();
+                while (page == null) {
+                    page = serverHandler.getPage();
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 news = page.data;
                 Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
                 newsList = new ArrayList<>(Arrays.asList(news));
                 newsList = (ArrayList<News>) Sample.createRandomList(newsList, 10);
-//                handler.obtainMessage(MORE_NEWS).sendToTarget();
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
+                refreshLayout.finishRefresh();
             }
         }).start();
     }
@@ -156,6 +165,7 @@ public class NewsFragment extends Fragment {
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();
+                    refreshLayout.finishLoadMore();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -195,14 +205,13 @@ public class NewsFragment extends Fragment {
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int currentPos;
             switch (msg.what) {
                 case SET_NEWSLIST:
                     detail_loading.setVisibility(View.GONE);
 //                    if (adapter == null) {
                         adapter = new NewsAdapter(newsList, activity);
 //                    }
-                    currentPos = headListView.getFirstVisiblePosition();
+                    int currentPos = headListView.getFirstVisiblePosition();
                     headListView.setAdapter(adapter);
                     headListView.setSelection(currentPos);
                     headListView.setOnScrollListener(adapter);
@@ -213,7 +222,7 @@ public class NewsFragment extends Fragment {
                 default:
                     break;
             }
-            super.handleMessage(msg);
+        super.handleMessage(msg);
         }
     };
 

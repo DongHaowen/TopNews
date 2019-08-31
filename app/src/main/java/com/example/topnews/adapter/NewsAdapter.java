@@ -14,14 +14,16 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.topnews.R;
-import com.example.topnews.bean.News;
+import com.example.topnews.MainActivity;
 import com.example.topnews.NewsActivity;
-import com.example.topnews.fragment.NewsFragment;
-import com.example.topnews.utils.ImageHandler;
+import com.example.topnews.R;
+import com.example.topnews.bean.HyperLinkSpan;
+import com.example.topnews.bean.News;
+
+import com.example.topnews.utils.FileHandler;
 import com.example.topnews.view.HeadListView;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +102,12 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
                 intent.putExtra("News",news.toJson());
                 intent.setClass(activity, NewsActivity.class);
                 activity.startActivity(intent);
+                MainActivity.history.add(news.newsID);
+                try {
+                    new FileHandler().store(news);
+                } catch (Exception e){
+
+                }
             }
         });
 

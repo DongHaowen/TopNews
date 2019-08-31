@@ -1,17 +1,12 @@
 package com.example.topnews;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
@@ -24,9 +19,9 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.example.topnews.R;
 import com.example.topnews.bean.HyperLink;
 import com.example.topnews.bean.HyperLinkSpan;
+import com.example.topnews.bean.MarqueeText;
 import com.example.topnews.bean.News;
 import com.example.topnews.utils.ImageHandler;
 import com.google.gson.GsonBuilder;
@@ -35,7 +30,6 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,12 +41,13 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     private File[] imagesSrc;
     private Set<String> loaded = new HashSet<>();
     private static int REQUEST_CODE=1;
-    private BroadcastReceiver receiver;
+
+    private boolean favorite = false;
 
     private void getNews(){
         Intent intent = getIntent();
         GsonBuilder builder = new GsonBuilder();
-        news = builder.create().fromJson(intent.getStringExtra("News"),News.class);
+        news = builder.create().fromJson(intent.getStringExtra("News"), News.class);
         try {
             imageLength = news.getImage().length;
         } catch (Exception e){
@@ -85,10 +80,6 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         tx.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    public void setReceiver(BroadcastReceiver receiver){
-        this.receiver = receiver;
-    }
-
     public void updateImages(){
         SliderLayout slider = findViewById(R.id.image_slider);
 
@@ -111,19 +102,21 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
                     slider.addSlider(sliderView);
                     loaded.add(image.getName());
                 } catch (Exception e) {
+                    Log.d("Image Fault.",news.newsID);
                     continue;
                 }
             }
         } catch (Exception e){
             e.printStackTrace();
-            Log.d("Error","Unknown Error.");
+            Log.d("Image Fault.",news.newsID);
             slider.setVisibility(View.GONE);
             return;
         }
 
         slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
         slider.setCustomAnimation(new DescriptionAnimation());
-        slider.setDuration(4000);
+        slider.setDuration(0);
+        slider.stopAutoCycle();
         slider.addOnPageChangeListener(this);
     }
 
@@ -153,14 +146,14 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
-        videoView.setVideoPath("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+        videoView.setVideoPath(news.video);
     }
 
     void downloadImage(){
         String[] urls = news.getImage();
         if(urls == null)
             return;
-        for (int i = 1 ; i < urls.length ; ++i){
+        for (int i = 0 ; i < urls.length ; ++i){
             new ImageHandler(this).downloadImage(news.newsID,urls[i],i);
         }
     }
@@ -177,21 +170,14 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
 
         setContentView(R.layout.activity_news);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(news.title);
         setSupportActionBar(toolbar);
+
+        MarqueeText tx = findViewById(R.id.news_title);
+        tx.setText(news.title);
 
         updateNews();
         updateImages();
         initVideo();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Wechat Share Function
-
-            }
-        });
     }
 
     @Override
@@ -202,15 +188,4 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
 
     @Override
     public void onPageScrollStateChanged(int state) { }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            unregisterReceiver(receiver);
-        } catch (Exception e){
-
-        }
-
-    }
 }

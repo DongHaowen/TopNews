@@ -24,6 +24,8 @@ import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
 import com.example.topnews.fragment.NewsFragment;
 import com.example.topnews.utils.GetWidth;
+import com.example.topnews.utils.RecordHandler;
+import com.example.topnews.utils.StateSaver;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
@@ -52,23 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
     final static int REQUEST_CODE = 1;
 
+    public final static RecordHandler history = new RecordHandler("history");
+    public final static RecordHandler favorite = new RecordHandler("favorite");
+    public final static StateSaver saver = new StateSaver();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if (android.os.Build.VERSION.SDK_INT > 9) {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//        }
-
         ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        }, REQUEST_CODE);
-        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
         }, REQUEST_CODE);
-
+        Log.d("Path:",getFilesDir().getPath());
         screenWidth = GetWidth.getWindowsWidth(this);
         channelWidth = screenWidth / 7;
         initView();
@@ -216,4 +215,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        history.save();
+        favorite.save();
+    }
 }
