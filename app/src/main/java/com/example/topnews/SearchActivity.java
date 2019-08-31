@@ -28,7 +28,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void SearchAciton(String string) {
                 Intent intent = new Intent();
-                intent.putExtra("Keywords", string);
+                intent.putExtra("keywords", string);
                 intent.setClass(getBaseContext(), SearchResultActivity.class);
                 startActivity(intent);
             }
