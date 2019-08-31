@@ -1,14 +1,19 @@
 package com.example.topnews;
 
+import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -41,6 +46,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     private File[] imagesSrc;
     private Set<String> loaded = new HashSet<>();
     private static int REQUEST_CODE=1;
+    private Toolbar toolbar;
 
     private boolean favorite = false;
 
@@ -158,6 +164,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,11 +176,34 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         downloadImage();
 
         setContentView(R.layout.activity_news);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_news);
+        toolbar.inflateMenu(R.menu.news_menu);
 
-        MarqueeText tx = findViewById(R.id.news_title);
-        tx.setText(news.title);
+        if(MainActivity.favorite.has(news.newsID))
+            toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_full);
+        else
+            toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_empty);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.favorite_btn){
+                    Log.d("MenuClick","Favorite Button");
+                    if(MainActivity.favorite.has(news.newsID)){
+                        MainActivity.favorite.remove(news.newsID);
+                        toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_empty);
+                    }else{
+                        MainActivity.favorite.add(news.newsID);
+                        toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_full);
+                    }
+                    MainActivity.favorite.save();
+                }
+                return false;
+            }
+        });
+
+        MarqueeText tx1 = findViewById(R.id.news_title);
+        tx1.setText(news.title);
 
         updateNews();
         updateImages();
@@ -188,4 +218,5 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
 
     @Override
     public void onPageScrollStateChanged(int state) { }
+
 }

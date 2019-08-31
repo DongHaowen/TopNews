@@ -1,20 +1,24 @@
 package com.example.topnews;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.StrictMode;
-import android.provider.AlarmClock;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -34,9 +38,9 @@ import com.example.topnews.utils.StateSaver;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private ColumnHorizontalScrollView scrollView;
     private LinearLayout radioGroup;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     ImageView shadeLeft;
     ImageView shadeRight;
+    private Toolbar toolbar;
 
     private BroadcastReceiver receiver;
 
@@ -71,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
         }, REQUEST_CODE);
-        Log.d("Path:",getFilesDir().getPath());
         screenWidth = GetWidth.getWindowsWidth(this);
         channelWidth = screenWidth / 7;
+
         setListener();
         initView();
         base = this;
@@ -112,6 +117,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        toolbar = findViewById(R.id.toolbar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
         columnChange();
     }
 
@@ -207,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
             newsFragment.setArguments(data);
             fragments.add(newsFragment);
         }
-        Log.d(TAG, "initFragment: " + fragments.size());
         NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(pageChangeListener);
@@ -237,5 +251,63 @@ public class MainActivity extends AppCompatActivity {
         history.save();
         favorite.save();
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        final String NAVI_TAG = "Navigation";
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+            Log.d(NAVI_TAG,"Gallery");
+        } else if (id == R.id.nav_slideshow) {
+            Log.d(NAVI_TAG,"SlideShow");
+        } else if (id == R.id.nav_tools) {
+            Log.d(NAVI_TAG, "Tools");
+        } else if (id == R.id.nav_share) {
+            Log.d(NAVI_TAG,"Share");
+        } else if (id == R.id.nav_send) {
+            Log.d(NAVI_TAG,"Send");
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

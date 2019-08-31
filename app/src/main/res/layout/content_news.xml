@@ -14,7 +14,9 @@
         <com.example.topnews.bean.MarqueeText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="40dp"
+            android:background="?attr/colorPrimary"
+            android:textSize="30dp"
+            android:textColor="@color/title_text_color"
             android:singleLine="true"
             android:ellipsize="marquee"
             android:focusable="true"

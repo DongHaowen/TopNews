@@ -18,11 +18,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
 public class RecordHandler {
-    Vector<String> records  = new Vector<>();
+    Set<String> records  = new HashSet<>();
     private String home = "/data/user/0/com.example.topnews/cache/";
     private File recordFile;
 
