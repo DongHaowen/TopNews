@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="default_text">#ff454545</color>
+
+    <color name="title_text_color">#ffffffff</color>
+
+    <color name="activity_bg_color">#fff5f5f5</color>
+
+    <color name="bg_full_image">#ff000000</color>
+    <color name="bg_row_pressed_start">#ffcccccc</color>
+    <color name="bg_row_pressed_center">#ffcccccc</color>
+    <color name="bg_row_pressed_end">#ffcccccc</color>
+    <color name="bg_row_normal">#ffffffff</color>
+    <item name="bg_row_normal_start" type="color">@color/bg_row_normal</item>
+    <item name="bg_row_normal_center" type="color">@color/bg_row_normal</item>
+    <item name="bg_row_normal_end" type="color">@color/bg_row_normal</item>
+    <color name="bg_row_border">#ffcacaca</color>
+
+    <color name="feed_hint_normal">#fff0f0f0</color>
+
+    <color name="list_notify_text">#ffffffff</color>
+
+    <color name="notify_view_divider">#66ffffff</color>
+
+    <color name="top_category_scroll_view_text_normal_day">#ff909090</color>
+
+    <color name="divider_day">#ffdddddd</color>
+
+    <color name="image_loading_bg">#ffefefef</color>
+
+    <color name="item_title">#ff444444</color>
+
+    <color name="ss_comment_time">#ff999999</color>
+
+    <color name="item_abstract">#ff444444</color>
+    <color name="channel_red">#ef4836</color>
+
+
+</resources>
