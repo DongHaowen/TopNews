@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
-public class NewsFragmentPagerAdapter extends FragmentPagerAdapter {
+public class NewsFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<Fragment> fragments;
     private FragmentManager fm;
 

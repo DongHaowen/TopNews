@@ -46,10 +46,6 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     ImageView shadeLeft;
     ImageView shadeRight;
-    ImageView topHead;
-    ImageView topMore;
-    ImageView topRefresh;
-    ProgressBar topProgress;
 
     private BroadcastReceiver receiver;
 
@@ -98,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(receiver,filter);
     }
 
-    private void initView() {
+    public void initView() {
         scrollView = findViewById(R.id.scroll_view);
         radioGroup = findViewById(R.id.radio_group);
         moreColumns = findViewById(R.id.more_columns);
@@ -107,10 +103,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         shadeLeft = findViewById(R.id.shade_left);
         shadeRight = findViewById(R.id.shade_right);
-        topHead = findViewById(R.id.top_head);
-        topMore = findViewById(R.id.top_more);
-        topRefresh = findViewById(R.id.top_refresh);
-        topProgress = findViewById(R.id.top_progress);
 
         buttonMoreColumns.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             newsFragment.setArguments(data);
             fragments.add(newsFragment);
         }
+        Log.d(TAG, "initFragment: " + fragments.size());
         NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(pageChangeListener);
