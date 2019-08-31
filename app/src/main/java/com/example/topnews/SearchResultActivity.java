@@ -52,7 +52,7 @@ public class SearchResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_result);
 
 //        if (android.os.Build.VERSION.SDK_INT > 9) {
 //            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -72,19 +72,14 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        scrollView = findViewById(R.id.scroll_view);
-        radioGroup = findViewById(R.id.radio_group);
-        moreColumns = findViewById(R.id.more_columns);
-        column = findViewById(R.id.column);
-        buttonMoreColumns = findViewById(R.id.button_more_columns);
-        viewPager = findViewById(R.id.view_pager);
-        shadeLeft = findViewById(R.id.shade_left);
-        shadeRight = findViewById(R.id.shade_right);
-        topSearch = findViewById(R.id.top_search);
-//        topHead = findViewById(R.id.top_head);
-//        topMore = findViewById(R.id.top_more);
-//        topRefresh = findViewById(R.id.top_refresh);
-//        topProgress = findViewById(R.id.top_progress);
+        scrollView = findViewById(R.id.result_scroll_view);
+        radioGroup = findViewById(R.id.result_radio_group);
+        moreColumns = findViewById(R.id.result_more_columns);
+        column = findViewById(R.id.result_column);
+        buttonMoreColumns = findViewById(R.id.result_button_more_columns);
+        viewPager = findViewById(R.id.result_view_pager);
+        shadeLeft = findViewById(R.id.result_shade_left);
+        shadeRight = findViewById(R.id.result_shade_right);
         buttonMoreColumns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
