@@ -1,6 +1,10 @@
 package com.example.topnews.bean;
 
+import com.example.topnews.MainActivity;
+import com.example.topnews.utils.StateSaver;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -55,7 +59,16 @@ public class CategoryManage {
      * @return 数据库存在用户配置 ? 数据库内的用户选择频道 : 默认用户选择频道 ;
      */
     public List<Category> getUserChannel() {
-        return defaultUserChannels;
+        StateSaver saver = MainActivity.saver;
+        if(!saver.load())
+            return defaultUserChannels;
+        List<Category> temp = new ArrayList<>();
+        int index = 1;
+        for (String type : saver.getSections()) {
+            temp.add(new Category(index,type,saver.getRank(type),1));
+            index ++;
+        }
+        return temp;
     }
 
     /**
@@ -63,7 +76,18 @@ public class CategoryManage {
      * @return 数据库存在用户配置 ? 数据库内的其它频道 : 默认其它频道 ;
      */
     public List<Category> getOtherChannel() {
-        return defaultOtherChannels;
+        StateSaver saver = MainActivity.saver;
+        if(!saver.load())
+            return defaultOtherChannels;
+        Vector<String> diff = getItemVector();
+        diff.removeAll(saver.getSections());
+        List<Category> temp = new ArrayList<>();
+        int index = 10 - diff.size();
+        for (String type : diff) {
+            temp.add(new Category(index,type,saver.getRank(type),1));
+            index ++;
+        }
+        return temp;
     }
 }
 

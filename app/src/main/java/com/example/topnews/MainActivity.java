@@ -120,34 +120,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        columnChange();
+    }
+
+    public void columnChange() {
         initColumn();
         initTabColumn();
         initFragment();
     }
 
-    public void columnChange() {
-        updateColumn();
-        initTabColumn();
-        initFragment();
-    }
-
-    private void updateColumn() {
-        userChannelList = new ArrayList<>();
-        int own = 1; int id = 1;
-        for (String item:saver.getSections()){
-            Log.d("Category",item);
-            userChannelList.add(new Category(saver.getRank(item),item,own,1));
-            id ++;
-            own ++;
-        }
-    }
-
     private void initColumn() {
-        if(!saver.load())
-            userChannelList = (ArrayList<Category>) CategoryManage.getManage().getUserChannel();
-        else{
-            updateColumn();
-        }
+        userChannelList = (ArrayList<Category>) new CategoryManage().getUserChannel();
     }
 
     private void initTabColumn() {

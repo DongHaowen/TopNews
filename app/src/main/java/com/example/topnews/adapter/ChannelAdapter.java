@@ -474,8 +474,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             has.add(category.name);
         }
         MainActivity.saver.updateSection(has);
-        for (int i = 0 ; i < mMyChannelItems.size() ; ++i){
-            MainActivity.saver.setRank(mMyChannelItems.get(i).name,mMyChannelItems.get(i).id);
+        for (Category category:mMyChannelItems){
+            MainActivity.saver.setRank(category.name,category.id);
+        }
+        for(Category category:mOtherChannelItems){
+            MainActivity.saver.setRank(category.name,category.id);
         }
         MainActivity.saver.save();
         MainActivity.base.columnChange();
