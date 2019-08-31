@@ -44,6 +44,7 @@ public class NewsFragment extends Fragment {
     private RelativeLayout notify_view;
     private TextView notify_view_text;
     int moreTimes = 0;
+    String keywords;
 
     RefreshLayout refreshLayout;
 
@@ -53,6 +54,8 @@ public class NewsFragment extends Fragment {
         Bundle args = getArguments();
         text = args != null ? args.getString("text") : "";
         categoryId = args != null ? args.getInt("id", 0) : 0;
+        keywords = args != null ? args.getString("Keywords") : "";
+        Log.d(TAG, "onCreate: " + keywords);
         initData();
         super.onCreate(savedInstanceState);
     }
@@ -127,6 +130,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
+                if (keywords != null) serverHandler.setWords(keywords);
                 serverHandler.setSize(100);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
@@ -154,6 +158,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
+                if (keywords != null) serverHandler.setWords(keywords);
                 serverHandler.setSize(100 + 10 * moreTimes);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
@@ -182,6 +187,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
+                if (keywords != null) serverHandler.setWords(keywords);
                 serverHandler.setSize(100);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());

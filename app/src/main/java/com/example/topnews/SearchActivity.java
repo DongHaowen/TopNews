@@ -29,7 +29,8 @@ public class SearchActivity extends AppCompatActivity {
             public void SearchAciton(String string) {
                 Intent intent = new Intent();
                 intent.putExtra("Keywords", string);
-                intent.setClass(getBaseContext(), NewsActivity.class);
+                intent.setClass(getBaseContext(), SearchResultActivity.class);
+                startActivity(intent);
             }
         });
 

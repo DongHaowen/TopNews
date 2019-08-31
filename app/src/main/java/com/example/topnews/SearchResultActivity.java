@@ -35,11 +35,6 @@ public class SearchResultActivity extends AppCompatActivity {
     ViewPager viewPager;
     ImageView shadeLeft;
     ImageView shadeRight;
-    //    ImageView topHead;
-//    ImageView topMore;
-//    ImageView topRefresh;
-//    ProgressBar topProgress;
-    ImageView topSearch;
 
     private ArrayList<Category> userChannelList;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -49,15 +44,13 @@ public class SearchResultActivity extends AppCompatActivity {
 
     final static int REQUEST_CODE = 1;
 
+    private String keywords;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
-
-//        if (android.os.Build.VERSION.SDK_INT > 9) {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//        }
+        keywords = getIntent().getStringExtra("Keywords");
 
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -177,6 +170,7 @@ public class SearchResultActivity extends AppCompatActivity {
             Bundle data = new Bundle();
             data.putString("text", userChannelList.get(i).name);
             data.putInt("id", userChannelList.get(i).id);
+            data.putString("Keywords", keywords);
             NewsFragment newsFragment = new NewsFragment();
             newsFragment.setArguments(data);
             fragments.add(newsFragment);

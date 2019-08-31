@@ -40,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     ImageView shadeLeft;
     ImageView shadeRight;
-//    ImageView topHead;
-//    ImageView topMore;
-//    ImageView topRefresh;
-//    ProgressBar topProgress;
     ImageView topSearch;
 
     private ArrayList<Category> userChannelList;
@@ -83,10 +79,7 @@ public class MainActivity extends AppCompatActivity {
         shadeLeft = findViewById(R.id.shade_left);
         shadeRight = findViewById(R.id.shade_right);
         topSearch = findViewById(R.id.top_search);
-//        topHead = findViewById(R.id.top_head);
-//        topMore = findViewById(R.id.top_more);
-//        topRefresh = findViewById(R.id.top_refresh);
-//        topProgress = findViewById(R.id.top_progress);
+
         buttonMoreColumns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
