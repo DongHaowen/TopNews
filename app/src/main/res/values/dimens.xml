@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_bar_height">44.0dip</dimen>
+
+    <dimen name="head_size">28.0dip</dimen>
+
+    <dimen name="bg_row_corner_radius">8.0dip</dimen>
+    <dimen name="bg_row_corner_radius_none">0.0dip</dimen>
+    <dimen name="bg_row_padding_left">1.0dip</dimen>
+    <dimen name="bg_row_padding_right">1.0dip</dimen>
+    <dimen name="bg_row_padding_top">1.0dip</dimen>
+    <dimen name="bg_row_padding_bottom">1.0dip</dimen>
+    <dimen name="bg_row_border_width">0.5dip</dimen>
+
+    <dimen name="list_item_horizontal_padding">15.0dip</dimen>
+
+    <dimen name="right_image_width">86.0dip</dimen>
+    <dimen name="right_image_height">60.0dip</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+</resources>
