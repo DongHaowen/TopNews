@@ -58,4 +58,10 @@ public class ChannelActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainActivity.saver.save();
+        MainActivity.base.columnChange();
+    }
 }

@@ -31,7 +31,6 @@ class Section {
 }
 
 public class State {
-    public Vector<Section> sections = new Vector<>();
     public Map<String, Section> map = new HashMap<>();
     public Map<String, Integer> rank = new HashMap<>();
 
@@ -46,13 +45,11 @@ public class State {
         Section section = new Section(type);
         map.put(type, section);
         Log.d("SectionAdd",type);
-        sections.add(section);
     }
     public void removeSection(final String type){
         Section section = map.get(type);
         if(section == null) return;
         Log.d("SectionRemove",type);
-        sections.remove(section);
         map.remove(type);
     }
     public void flushSection(final String type){
@@ -65,8 +62,9 @@ public class State {
     }
     public Vector<String> getSections(){
         Vector<String> types = new Vector<>();
-        for (Section section : sections)
-            types.add(section.type);
+
+        for (String type : map.keySet())
+            types.add(type);
         return types;
     }
 }

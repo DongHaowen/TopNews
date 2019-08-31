@@ -58,11 +58,9 @@ public class StateSaver {
         Vector<String> has = state.getSections();
         has.removeAll(types);
         for (String type : has){
-            Log.d("UPDATE_DELETE:",type);
             state.removeSection(type);
         }
         for (String type : types){
-            Log.d("UPDATE_ADD:",type);
             state.addSection(type);
         }
     }
