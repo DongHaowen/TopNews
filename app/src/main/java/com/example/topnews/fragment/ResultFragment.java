@@ -103,7 +103,7 @@ public class ResultFragment extends Fragment {
                 try {
                     page = serverHandler.getPage();
                     news = page.data;
-                    for (int i = 10 + 10 * (moreTimes - 1); i < 10 + 10 * moreTimes; i++) {
+                    for (int i = newsList.size(); i < news.length; i++) {
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();
