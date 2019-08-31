@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <com.example.oddnews.bean.MarqueeText
+        <com.example.topnews.bean.MarqueeText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/news_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="@string/large_text" />
+            android:text="Hello World" />
         <include layout="@layout/video_player"></include>
     </LinearLayout>
 
