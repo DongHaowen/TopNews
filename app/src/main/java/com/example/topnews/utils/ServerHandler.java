@@ -21,9 +21,9 @@ import java.net.UnknownHostException;
 public class ServerHandler {
 	private final static String TAG = "NewsFragment";
 	final String requestHead = "https://api2.newsminer.net/svc/news/queryNewsList?";
-	int size = 15;
+	int size = 0;
 	String startDate = "";
-	String endDate = "2019-08-28";
+	String endDate = "";
 	String words = "";
 	String categories = "";
 	

@@ -40,13 +40,17 @@ public class News {
 	Map<String, HyperLink> linkMap;
 
 	public String[] getImage() {
-		if(image.equals("[]")) return null;
-		if(image.contains(",")) {
-			String[] url = image.substring(1, image.length() - 1).split("[,]");
-			return url;
-		}
-		else {
-			return new String[]{image.substring(1, image.length() - 1)};
+		try {
+			if(image.equals("[]")) return null;
+			if(image.contains(",")) {
+				String[] url = image.substring(1, image.length() - 1).split("[,]");
+				return url;
+			}
+			else {
+				return new String[]{image.substring(1, image.length() - 1)};
+			}
+		} catch (Exception e){
+			return null;
 		}
 	}
 	
@@ -99,6 +103,11 @@ public class News {
 	@Override
 	public String toString() {
 		return title + "\n" + content;
+	}
+
+	@Override
+	public int hashCode() {
+		return newsID.hashCode();
 	}
 }
 

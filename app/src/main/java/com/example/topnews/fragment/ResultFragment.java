@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +28,19 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NewsFragment extends Fragment {
+public class ResultFragment extends Fragment {
     private final static String TAG = "NewsFragment";
     Activity activity;
     ArrayList<News> newsList = new ArrayList<>();
     HeadListView headListView;
     NewsAdapter adapter;
-    String text;
-    int categoryId;
+    String keywords;
     ImageView detail_loading;
     public final static int SET_NEWSLIST = 0;
     public final static int MORE_NEWS = 1;
+    //Toast提示框
+    private RelativeLayout notify_view;
+    private TextView notify_view_text;
     int moreTimes = 0;
 
     RefreshLayout refreshLayout;
@@ -48,8 +49,7 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         Bundle args = getArguments();
-        text = args != null ? args.getString("text") : "";
-        categoryId = args != null ? args.getInt("id", 0) : 0;
+        keywords = args != null ? args.getString("keywords") : "";
         initData();
         super.onCreate(savedInstanceState);
     }
@@ -66,23 +66,7 @@ public class NewsFragment extends Fragment {
             //fragment可见时加载数据
             if(newsList != null && newsList.size() !=0){
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
-            } // else{
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // TODO Auto-generated method stub
-//                        try {
-//                            Thread.sleep(2000);
-//                        } catch (InterruptedException e) {
-//                            // TODO Auto-generated catch block
-//                            e.printStackTrace();
-//                        }
-//                        handler.obtainMessage(SET_NEWSLIST).sendToTarget();
-//                    }
-//                }).start();
-//            }
-//        }else{
-//            //fragment不可见时不执行操作
+            }
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -94,52 +78,17 @@ public class NewsFragment extends Fragment {
         // TODO Auto-generated method stub
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.news_fragment, null);
         headListView = view.findViewById(R.id.mListView);
-        TextView itemTextView = view.findViewById(R.id.item_textview);
         detail_loading = view.findViewById(R.id.detail_loading);
 
-        itemTextView.setText(text);
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-//                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-                refreshData();
-            }
-        });
+        refreshLayout.setEnableRefresh(false);
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
-//                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
                 getMoreData();
             }
         });
         return view;
-    }
-
-    public void refreshData() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                serverHandler = new ServerHandler();
-                serverHandler.setSize(100);
-                serverHandler.setCategories(text);
-                serverHandler.setEndDate(GetDate.getCurrentDate());
-                while (page == null) {
-                    page = serverHandler.getPage();
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                news = page.data;
-                Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
-                newsList = new ArrayList<>(Arrays.asList(news));
-                newsList = (ArrayList<News>) Sample.createRandomList(newsList, 10);
-                handler.obtainMessage(SET_NEWSLIST).sendToTarget();
-                refreshLayout.finishRefresh();
-            }
-        }).start();
     }
 
     public void getMoreData() {
@@ -148,14 +97,13 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
-                serverHandler.setSize(100 + 10 * moreTimes);
-                serverHandler.setCategories(text);
+                if (keywords != null) serverHandler.setWords(keywords);
+                serverHandler.setSize(10 + 10 * moreTimes);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
                 try {
                     page = serverHandler.getPage();
                     news = page.data;
-                    Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
-                    for (int i = 100 + 10 * (moreTimes - 1); i < 100 + 10 * moreTimes; i++) {
+                    for (int i = 10 + 10 * (moreTimes - 1); i < 10 + 10 * moreTimes; i++) {
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();
@@ -176,8 +124,8 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
-                serverHandler.setSize(100);
-                serverHandler.setCategories(text);
+                serverHandler.setSize(10);
+                if (keywords != null) serverHandler.setWords(keywords);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
                 while (page == null) {
                     page = serverHandler.getPage();
@@ -188,9 +136,7 @@ public class NewsFragment extends Fragment {
                     }
                 }
                 news = page.data;
-                Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
                 newsList = new ArrayList<>(Arrays.asList(news));
-                newsList = (ArrayList<News>) Sample.createRandomList(newsList, 10);
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
             }
         }).start();
@@ -203,7 +149,7 @@ public class NewsFragment extends Fragment {
                 case SET_NEWSLIST:
                     detail_loading.setVisibility(View.GONE);
 //                    if (adapter == null) {
-                        adapter = new NewsAdapter(newsList, activity);
+                    adapter = new NewsAdapter(newsList, activity);
 //                    }
                     int currentPos = headListView.getFirstVisiblePosition();
                     headListView.setAdapter(adapter);
@@ -216,7 +162,7 @@ public class NewsFragment extends Fragment {
                 default:
                     break;
             }
-        super.handleMessage(msg);
+            super.handleMessage(msg);
         }
     };
 

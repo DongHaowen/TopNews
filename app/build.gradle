@@ -16,9 +16,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        disable 'RestrictedApi'
-    }
 }
 
 dependencies {
@@ -39,4 +36,5 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
+    implementation 'com.carson_ho:SearchLayout:1.0.1'
 }

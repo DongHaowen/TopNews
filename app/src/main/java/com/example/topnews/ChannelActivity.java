@@ -63,6 +63,6 @@ public class ChannelActivity extends AppCompatActivity {
         super.onDestroy();
         MainActivity.saver.save();
 //        MainActivity.base.columnChange();
-        MainActivity.base.initView();
+        MainActivity.base.columnChange();
     }
 }

@@ -19,6 +19,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -80,7 +89,8 @@ public class MainActivity extends AppCompatActivity
         channelWidth = screenWidth / 7;
 
         setListener();
-        initView();
+        intialView();
+        columnChange();
         base = this;
     }
 
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         registerReceiver(receiver,filter);
     }
 
-    public void initView() {
+    void intialView(){
         scrollView = findViewById(R.id.scroll_view);
         radioGroup = findViewById(R.id.radio_group);
         moreColumns = findViewById(R.id.more_columns);
@@ -117,8 +127,19 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
         toolbar = findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_news);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.search_btn){
+                    Intent intent = new Intent();
+                    intent.setClass(getBaseContext(),SearchActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -126,8 +147,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        columnChange();
     }
 
     public void columnChange() {
@@ -208,8 +227,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static String TAG = "MainActivity";
-
     private void initFragment() {
         fragments.clear();
         int cnt = userChannelList.size();
@@ -217,7 +234,6 @@ public class MainActivity extends AppCompatActivity
             Bundle data = new Bundle();
             data.putString("text", userChannelList.get(i).name);
             data.putInt("id", userChannelList.get(i).id);
-            Log.d(TAG, "initFragment: " + userChannelList.get(i).name);
             NewsFragment newsFragment = new NewsFragment();
             newsFragment.setArguments(data);
             fragments.add(newsFragment);

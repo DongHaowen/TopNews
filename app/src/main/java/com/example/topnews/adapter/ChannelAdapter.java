@@ -482,7 +482,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         MainActivity.saver.save();
 //        MainActivity.base.columnChange();
-        MainActivity.base.initView();
+        MainActivity.base.columnChange();
 
         int visibleChildCount = parent.getChildCount();
         for (int i = 0; i < visibleChildCount; i++) {
