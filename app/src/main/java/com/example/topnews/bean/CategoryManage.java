@@ -4,7 +4,6 @@ import com.example.topnews.MainActivity;
 import com.example.topnews.utils.StateSaver;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 

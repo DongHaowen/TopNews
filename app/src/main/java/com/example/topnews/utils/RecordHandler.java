@@ -1,23 +1,13 @@
 package com.example.topnews.utils;
 
 
-import android.content.Context;
 import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;

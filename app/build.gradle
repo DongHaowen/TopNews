@@ -1,4 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
+
+MobSDK {
+    appKey "2c43eb4601818"
+    appSecret "83f3a21a5c16880284c53505e6da2928"
+    ShareSDK {}
+}
 
 android {
     compileSdkVersion 28

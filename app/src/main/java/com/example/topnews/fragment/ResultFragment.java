@@ -18,12 +18,10 @@ import com.example.topnews.adapter.NewsAdapter;
 import com.example.topnews.bean.News;
 import com.example.topnews.bean.Page;
 import com.example.topnews.utils.GetDate;
-import com.example.topnews.utils.Sample;
 import com.example.topnews.utils.ServerHandler;
 import com.example.topnews.view.HeadListView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,7 +101,7 @@ public class ResultFragment extends Fragment {
                 try {
                     page = serverHandler.getPage();
                     news = page.data;
-                    for (int i = 10 + 10 * (moreTimes - 1); i < 10 + 10 * moreTimes; i++) {
+                    for (int i = newsList.size(); i < news.length; i++) {
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();

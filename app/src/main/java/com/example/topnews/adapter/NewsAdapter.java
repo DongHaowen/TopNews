@@ -2,7 +2,6 @@ package com.example.topnews.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,11 @@ import com.bumptech.glide.Glide;
 import com.example.topnews.MainActivity;
 import com.example.topnews.NewsActivity;
 import com.example.topnews.R;
-import com.example.topnews.bean.HyperLinkSpan;
 import com.example.topnews.bean.News;
 
 import com.example.topnews.utils.FileHandler;
 import com.example.topnews.view.HeadListView;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
