@@ -1,8 +1,13 @@
 package com.example.topnews;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.StrictMode;
+import android.provider.AlarmClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -29,6 +34,7 @@ import com.example.topnews.utils.StateSaver;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView topRefresh;
     ProgressBar topProgress;
 
+    private BroadcastReceiver receiver;
+
     private ArrayList<Category> userChannelList;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private int screenWidth = 0;
@@ -56,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     public final static RecordHandler history = new RecordHandler("history");
     public final static RecordHandler favorite = new RecordHandler("favorite");
     public final static StateSaver saver = new StateSaver();
+    public static MainActivity base;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,24 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Path:",getFilesDir().getPath());
         screenWidth = GetWidth.getWindowsWidth(this);
         channelWidth = screenWidth / 7;
+        setListener();
         initView();
+        base = this;
+    }
+
+    private void setListener(){
+        IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if(action.equals(Intent.ACTION_TIME_TICK)) {
+                    history.save();
+                    favorite.save();
+                }
+            }
+        };
+        registerReceiver(receiver,filter);
     }
 
     private void initView() {
@@ -94,18 +120,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        columnChange();
-    }
-
-    private void columnChange() {
         initColumn();
         initTabColumn();
         initFragment();
     }
 
+    public void columnChange() {
+        updateColumn();
+        initTabColumn();
+        initFragment();
+    }
+
+    private void updateColumn() {
+        userChannelList = new ArrayList<>();
+        int own = 1; int id = 1;
+        for (String item:saver.getSections()){
+            Log.d("Category",item);
+            userChannelList.add(new Category(saver.getRank(item),item,own,1));
+            id ++;
+            own ++;
+        }
+    }
+
     private void initColumn() {
-        userChannelList = (ArrayList<Category>) CategoryManage.getManage().getUserChannel();
+        if(!saver.load())
+            userChannelList = (ArrayList<Category>) CategoryManage.getManage().getUserChannel();
+        else{
+            updateColumn();
+        }
     }
 
     private void initTabColumn() {
@@ -176,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static String TAG = "MainActivity";
+
     private void initFragment() {
         fragments.clear();
         int cnt = userChannelList.size();
@@ -183,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle data = new Bundle();
             data.putString("text", userChannelList.get(i).name);
             data.putInt("id", userChannelList.get(i).id);
+            Log.d(TAG, "initFragment: " + userChannelList.get(i).name);
             NewsFragment newsFragment = new NewsFragment();
             newsFragment.setArguments(data);
             fragments.add(newsFragment);
@@ -215,5 +260,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         history.save();
         favorite.save();
+        unregisterReceiver(receiver);
     }
 }

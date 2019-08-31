@@ -33,6 +33,7 @@ class Section {
 public class State {
     public Vector<Section> sections = new Vector<>();
     public Map<String, Section> map = new HashMap<>();
+    public Map<String, Integer> rank = new HashMap<>();
 
     public void addRecord(final String type, final String newsID){
         if(map.get(type) == null){
@@ -52,6 +53,7 @@ public class State {
         if(section == null) return;
         Log.d("SectionRemove",type);
         sections.remove(section);
+        map.remove(type);
     }
     public void flushSection(final String type){
         Section section = map.get(type);

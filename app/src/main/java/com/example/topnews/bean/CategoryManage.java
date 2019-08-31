@@ -2,6 +2,7 @@ package com.example.topnews.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class CategoryManage {
     public static CategoryManage categoryManage;
@@ -13,6 +14,15 @@ public class CategoryManage {
      * 默认的其他频道列表
      * */
     public static List<Category> defaultOtherChannels;
+
+    final static public String[] items = {"军事","娱乐","教育","健康","文化","财经","体育","汽车","科技","社会"};
+
+    static public Vector<String> getItemVector(){
+        Vector<String> vector = new Vector<>();
+        for (String item : items)
+            vector.add(item);
+        return vector;
+    }
 
     /** 判断数据库中是否存在用户数据 */
     private boolean userExist = false;
