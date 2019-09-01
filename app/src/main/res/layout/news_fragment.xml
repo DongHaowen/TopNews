@@ -24,8 +24,8 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#444444"
-        app:srlPrimaryColor="#444444"
+        android:background="@android:color/white"
+        app:srlPrimaryColor="@android:color/white"
         app:srlAccentColor="@android:color/white"
         app:srlEnablePreviewInEditMode="true">
         <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->

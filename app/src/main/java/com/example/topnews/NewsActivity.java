@@ -14,12 +14,15 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.bluejamesbond.text.DocumentView;
+import com.bluejamesbond.text.style.TextAlignment;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
@@ -81,22 +84,38 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     public void updateNews(){
         // Highlight and HyperLink
         TextView tx = findViewById(R.id.news_content);
-        Map<String, HyperLink> keyword = news.getLinkMap();
-        SpannableString spanText = new SpannableString(news.content);
-        for (Map.Entry<String, HyperLink> pair:keyword.entrySet()){
-            // Log.d("Match Key", pair.getKey());
-            Pattern p = Pattern.compile(pair.getKey()+"\\W");
-            Matcher matcher = p.matcher(spanText);
-            while (matcher.find()){
-                int start = matcher.start();
-                int end = matcher.end() - 1;
-                // Log.d("Match",start+" "+end);
-                spanText.setSpan(new HyperLinkSpan(pair.getValue().mention, pair.getValue().linkedURL)
-                        ,start,end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            }
-        }
-        tx.setText(spanText);
+//        Map<String, HyperLink> keyword = news.getLinkMap();
+//        SpannableString spanText = new SpannableString(news.content);
+//        for (Map.Entry<String, HyperLink> pair:keyword.entrySet()){
+//            // Log.d("Match Key", pair.getKey());
+//            Pattern p = Pattern.compile(pair.getKey()+"\\W");
+//            Matcher matcher = p.matcher(spanText);
+//            while (matcher.find()){
+//                int start = matcher.start();
+//                int end = matcher.end() - 1;
+//                // Log.d("Match",start+" "+end);
+//                spanText.setSpan(new HyperLinkSpan(pair.getValue().mention, pair.getValue().linkedURL)
+//                        ,start,end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+//            }
+//        }
+//        tx.setText(spanText);
+        tx.setText(ToDBC(news.content));
+
         tx.setMovementMethod(LinkMovementMethod.getInstance());
+//        DocumentView documentView = findViewById(R.id.document_view);
+//        documentView.setText("Hello World"); // Set to `true` to enable justification
+    }
+
+    public static String ToDBC(String input) {
+        char[] c = input.toCharArray();
+        for (int i = 0; i< c.length; i++) {
+            if (c[i] == 12288) {
+                c[i] = (char) 32;
+                continue;
+            }if (c[i]> 65280&& c[i]< 65375)
+                c[i] = (char) (c[i] - 65248);
+        }
+        return new String(c);
     }
 
     public void updateImages(){
@@ -229,9 +248,12 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     private void initRecommend(){
         viewPager = findViewById(R.id.result_view_pager);
         viewPager.setCurrentItem(0);
+        LinearLayout layout = findViewById(R.id.content_record_layout);
+        layout.setBackgroundColor(getResources().getColor(R.color.title_text_color));
         TextView textView = findViewById(R.id.record_title);
         textView.setText("相关推荐");
-        textView.setTextSize(32);
+        textView.setTextSize(18);
+        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
 
         fragments.clear();
         RecommendFragment fragment = new RecommendFragment();

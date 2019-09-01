@@ -57,6 +57,7 @@
                     <TextView
                         android:id="@+id/item_title"
                         style="@style/item_title"
+                        android:textSize="18sp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@id/right_image" />
@@ -73,6 +74,7 @@
                     <TextView
                         android:id="@+id/item_source"
                         style="@style/item_secondary_text"
+                        android:textSize="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.0"
@@ -89,6 +91,7 @@
                     <TextView
                         android:id="@+id/publish_time"
                         style="@style/item_secondary_text"
+                        android:textSize="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10.0dip"
@@ -107,6 +110,7 @@
             <TextView
                 android:id="@+id/item_abstract"
                 style="@style/item_abstract"
+                android:textSize="14sp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4.0dip"
