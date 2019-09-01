@@ -125,6 +125,7 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
                     viewHolder.publishTime.setTextColor(Color.BLACK);
                     viewHolder.itemAbstract.setTextColor(Color.BLACK);
                 }
+                MainActivity.saver.addNews(news.category,news.newsID);
                 Intent intent = new Intent();
                 intent.putExtra("News",news.toJson());
                 intent.setClass(activity, NewsActivity.class);
