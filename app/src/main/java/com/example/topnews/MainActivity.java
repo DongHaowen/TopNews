@@ -35,14 +35,13 @@ import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
 import com.example.topnews.fragment.LocalFragment;
 import com.example.topnews.fragment.NewsFragment;
+import com.example.topnews.ui.login.LoginActivity;
 import com.example.topnews.utils.GetWidth;
 import com.example.topnews.utils.RecordHandler;
 import com.example.topnews.utils.StateSaver;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
-
-import jackmego.com.jieba_android.JiebaSegmenter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -352,8 +351,12 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent();
             intent.setClass(getBaseContext(), HistoryActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_tools) {
+        } else if (id == R.id.nav_login) {
             Log.d(NAVI_TAG, "Tools");
+            Log.d(NAVI_TAG,"History");
+            Intent intent = new Intent();
+            intent.setClass(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
             Log.d(NAVI_TAG,"Share");
         } else if (id == R.id.nav_send) {

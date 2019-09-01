@@ -17,9 +17,9 @@
             android:icon="@mipmap/ic_history_black_48dp"
             android:title="@string/menu_history" />
         <item
-            android:id="@+id/nav_tools"
+            android:id="@+id/nav_login"
             android:icon="@mipmap/ic_account_box_black_48dp"
-            android:title="@string/menu_tools" />
+            android:title="@string/menu_login" />
     </group>
 
     <item android:title="Communicate">

@@ -8,20 +8,23 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/icon_new"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon_new"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login"></activity>
         <activity
             android:name=".NewsActivity"
             android:label="@string/title_activity_news"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,11 +33,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ChannelActivity"/>
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".SearchResultActivity"/>
-        <activity android:name=".FavoriteActivity"/>
-        <activity android:name=".HistoryActivity"/>
+        <activity android:name=".ChannelActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchResultActivity" />
+        <activity android:name=".FavoriteActivity" />
+        <activity android:name=".HistoryActivity" />
     </application>
 
 </manifest>
