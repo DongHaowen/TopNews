@@ -17,24 +17,24 @@ public class News {
 			return word.hashCode();
 		}
 	}
-	String image;
+	private String image;
 	public String publishTime;
-	ScoreWord[] keywords;
-	String language;
+	private ScoreWord[] keywords;
+	private String language;
 	public String video;
 	public String title;
 	public String newsID;
-	String crawlTime;
+	private String crawlTime;
 	public String publisher;
 	public String category;
 	public String content;
 	
-	ScoreWord[] when; 
-	ScoreWord[] where; 
-	ScoreWord[] who; 
-	PersonLink[] persons; 
-	OrganizationLink[] organizations; 
-	LocationLink[] locations;
+	private ScoreWord[] when;
+	private ScoreWord[] where;
+	private ScoreWord[] who;
+	private PersonLink[] persons;
+	private OrganizationLink[] organizations;
+	private LocationLink[] locations;
 	
 	boolean mapped = false;
 	Map<String, Double> scoreMap;
