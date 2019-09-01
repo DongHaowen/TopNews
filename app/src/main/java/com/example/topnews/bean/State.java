@@ -6,26 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-class Section {
-    public String type;
-    public Vector<String> items;
-    public Section(final String type){
-        this.type = type;
-        items = new Vector<>();
-    }
-    public void add(final String newsID){
-        items.add(newsID);
-    }
-    public void flush() {
-        items.clear();
-    }
-
-    @Override
-    public int hashCode() {
-        return type.hashCode();
-    }
-}
-
 public class State {
     public Map<String, Section> map = new HashMap<>();
     public Map<String, Integer> rank = new HashMap<>();
@@ -62,5 +42,9 @@ public class State {
         for (String type : map.keySet())
             types.add(type);
         return types;
+    }
+    public void add(final String type, final String newsID){
+        addSection(type);
+        map.get(type).add(newsID);
     }
 }

@@ -10,52 +10,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.topnews.MainActivity;
 import com.example.topnews.R;
 import com.example.topnews.adapter.NewsAdapter;
 import com.example.topnews.bean.News;
 import com.example.topnews.bean.Page;
 import com.example.topnews.utils.FileHandler;
-import com.example.topnews.utils.RecommendAdpter;
-import com.example.topnews.utils.RecordAdpter;
+import com.example.topnews.utils.GetDate;
+import com.example.topnews.utils.Sample;
 import com.example.topnews.utils.ServerHandler;
 import com.example.topnews.view.HeadListView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class RecommendFragment extends Fragment {
-    private final static String TAG = "RecommendFragment";
+public class LocalFragment extends Fragment {
+    private final static String TAG = "LocalFragment";
     Activity activity;
     ArrayList<News> newsList = new ArrayList<>();
     HeadListView headListView;
     NewsAdapter adapter;
-    String keywords;
+    String text;
+    int categoryId;
     ImageView detail_loading;
     public final static int SET_NEWSLIST = 0;
     public final static int MORE_NEWS = 1;
-    //Toast提示框
-    private RelativeLayout notify_view;
-    private TextView notify_view_text;
+    int moreTimes = 0;
+    private final int newsListSize = 30;
 
-    private RecommendAdpter src;
-
-    final static int showLimit = 5;
+    public boolean grayable = false;
 
     RefreshLayout refreshLayout;
-
-    public void setAdapter(RecommendAdpter src){
-        this.src = src;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         Bundle args = getArguments();
-        keywords = args != null ? args.getString("keywords") : "";
+        text = args != null ? args.getString("text") : "";
+        categoryId = args != null ? args.getInt("id", 0) : 0;
+        grayable = args != null ? args.getBoolean("gray"):false;
         initData();
         super.onCreate(savedInstanceState);
     }
@@ -84,11 +82,8 @@ public class RecommendFragment extends Fragment {
         // TODO Auto-generated method stub
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.news_fragment, null);
         headListView = view.findViewById(R.id.mListView);
+        TextView itemTextView = view.findViewById(R.id.item_textview);
         detail_loading = view.findViewById(R.id.detail_loading);
-
-        refreshLayout = view.findViewById(R.id.refreshLayout);
-        refreshLayout.setEnableRefresh(false);
-        refreshLayout.setEnableLoadMore(false);
 
         return view;
     }
@@ -101,11 +96,12 @@ public class RecommendFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                News news = null;
-                src.recommend();
-                while ((news = src.next()) != null){
-                    Log.d("RecordID:",news.newsID);
-                    newsList.add(news);
+                for (String newsID:MainActivity.saver.getQueue(text)){
+                    try {
+                        newsList.add(new FileHandler().load(newsID));
+                    } catch (Exception e){
+                        continue;
+                    }
                 }
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
             }
@@ -117,11 +113,10 @@ public class RecommendFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SET_NEWSLIST:
-                    Log.d(TAG, "handleMessage: " + newsList.size());
                     detail_loading.setVisibility(View.GONE);
 //                    if (adapter == null) {
                     adapter = new NewsAdapter(newsList, activity);
-                    adapter.setGray();
+                    if(grayable) adapter.setGray();
 //                    }
                     int currentPos = headListView.getFirstVisiblePosition();
                     headListView.setAdapter(adapter);

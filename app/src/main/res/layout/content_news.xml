@@ -37,23 +37,10 @@
             android:layout_margin="@dimen/text_margin"
             android:textSize="18sp"
             android:text="Hello World" />
-<!--        <com.bluejamesbond.text.DocumentView xmlns:ext="http://schemas.android.com/apk/res-auto"-->
-<!--            android:id="@+id/document_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/directors_layout"-->
-<!--            android:layout_marginTop="@dimen/activity_vertical_margin"-->
-<!--            ext:documentView_antialias="true"-->
-<!--            ext:documentView_cacheConfig="no_cache"-->
-<!--            ext:documentView_insetPaddingLeft="@dimen/activity_horizontal_margin"-->
-<!--            ext:documentView_insetPaddingRight="@dimen/activity_horizontal_margin"-->
-<!--            ext:documentView_textAlignment="justified"-->
-<!--            ext:documentView_textSubPixel="true" />-->
         <include layout="@layout/video_player"
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
         <include layout="@layout/content_record"
-            android:layout_weight="1"
             android:layout_height="750dp"
             android:layout_width="match_parent" />
     </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.topnews.utils;
 
 import android.util.Log;
 
+import com.example.topnews.bean.Section;
 import com.example.topnews.bean.State;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Queue;
 import java.util.Vector;
 
 public class StateSaver {
@@ -65,5 +67,11 @@ public class StateSaver {
     }
     public Vector<String> getSections(){
         return state.getSections();
+    }
+    public void addNews(final String type, final String newsID){
+        state.add(type,newsID);
+    }
+    public Queue<String> getQueue(final String type){
+        return state.map.get(type).items;
     }
 }

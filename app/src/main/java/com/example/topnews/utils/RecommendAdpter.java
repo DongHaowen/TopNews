@@ -23,28 +23,45 @@ public class RecommendAdpter {
     final static int fetchLimit = 20;
     private News news;
     final private String TAG = "RecommendAdapter";
-    final private double minScore = 0.9;
+    final private double minScore = 0.8;
     public RecommendAdpter(News news){
         this.news = news;
         recommends.clear();
     }
 
-    public String getKeyword(){
+    List<String> keyList = new ArrayList<>();
+
+    private void initialKeyList(){
         String content = news.title + "\n" + news.content;
-        List<String> list = new ArrayList<>();
+        keyList = new ArrayList<>();
         // JiebaSegmenter segmenter = JiebaSegmenter.getJiebaSegmenterSingleton();
         // ArrayList<String> list = segmenter.getDividedString(content);
         News.ScoreWord[] keywords = news.getKeywords();
         for(News.ScoreWord word:keywords){
             if(word.score > minScore)
-                list.add(word.word);
+                keyList.add(word.word);
         }
-        if(list.size() == 0)
+    }
+
+    public String getKeyword(){
+
+        if(keyList.size() == 0)
             return null;
-        return list.get((int)(Math.random()* list.size()));
+        int index = (int)(Math.random()* keyList.size());
+        String key = keyList.get(index);
+        keyList.remove(index);
+        return key;
+    }
+
+    private Vector<String> getNewsIds(){
+        Vector<String> temp = new Vector<>();
+        for (News news : recommends)
+            temp.add(news.newsID);
+        return temp;
     }
 
     public void recommend(){
+        initialKeyList();
         String keyword = getKeyword();
         while (keyword != null && recommends.size() < showLimit) {
             Log.d(TAG, "Keyword:" + keyword);
@@ -56,9 +73,10 @@ public class RecommendAdpter {
             Page page = serverHandler.getPage();
             // Log.d(TAG,"PageSize:"+String.valueOf(page.getPageSize()));
             for (int i = 0; i < page.getPageSize(); ++i) {
-                Log.d(TAG, page.getNews(i).title);
-                if (page.getNews(i).newsID == news.newsID) continue;
-                if(recommends.contains(news)) continue;
+                // Log.d(TAG, page.getNews(i).title);
+                if (page.getNews(i) == null) continue;
+                if (page.getNews(i).newsID.equals(news.newsID)) continue;
+                if(getNewsIds().contains(news.newsID)) continue;
                 recommends.add(page.getNews(i));
                 if (recommends.size() >= showLimit) return;
             }

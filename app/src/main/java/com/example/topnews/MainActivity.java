@@ -240,9 +240,7 @@ public class MainActivity extends AppCompatActivity
 
     public ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
-        public void onPageScrolled(int i, float v, int i1) {
-
-        }
+        public void onPageScrolled(int i, float v, int i1) { }
 
         @Override
         public void onPageSelected(int i) {
@@ -251,9 +249,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public void onPageScrollStateChanged(int i) {
-
-        }
+        public void onPageScrollStateChanged(int i) { }
     };
 
     @Override
@@ -261,6 +257,7 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
         history.save();
         favorite.save();
+        saver.save();;
         unregisterReceiver(receiver);
     }
 

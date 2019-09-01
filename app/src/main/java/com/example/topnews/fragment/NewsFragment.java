@@ -68,23 +68,7 @@ public class NewsFragment extends Fragment {
             //fragment可见时加载数据
             if(newsList != null && newsList.size() !=0){
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
-            } // else{
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // TODO Auto-generated method stub
-//                        try {
-//                            Thread.sleep(2000);
-//                        } catch (InterruptedException e) {
-//                            // TODO Auto-generated catch block
-//                            e.printStackTrace();
-//                        }
-//                        handler.obtainMessage(SET_NEWSLIST).sendToTarget();
-//                    }
-//                }).start();
-//            }
-//        }else{
-//            //fragment不可见时不执行操作
+            }
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
