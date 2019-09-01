@@ -40,7 +40,6 @@ public class LocalFragment extends Fragment {
     ImageView detail_loading;
     public final static int SET_NEWSLIST = 0;
     public final static int MORE_NEWS = 1;
-    int moreTimes = 0;
     private final int newsListSize = 30;
 
     public boolean grayable = false;
@@ -96,12 +95,18 @@ public class LocalFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (String newsID:MainActivity.saver.getQueue(text)){
-                    try {
-                        newsList.add(new FileHandler().load(newsID));
-                    } catch (Exception e){
-                        continue;
+                newsList.clear();
+                try {
+                    for (String newsID:MainActivity.saver.getQueue(text)){
+                        try {
+                            newsList.add(new FileHandler().load(newsID));
+                        } catch (Exception e){
+                            continue;
+                        }
+
                     }
+                } catch (Exception e){
+
                 }
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
             }

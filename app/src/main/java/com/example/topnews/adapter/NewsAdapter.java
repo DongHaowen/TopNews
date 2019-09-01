@@ -94,6 +94,20 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
             viewHolder = (ViewHolder) view.getTag();
         }
         final News news = getItem(position);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d("RecordID",news.newsID);
+                    new FileHandler().store(news);
+                    MainActivity.saver.addNews(news.category,news.newsID);
+                } catch (Exception e){
+
+                }
+            }
+        }).start();
+
+
         if(grayable && MainActivity.history.has(news.newsID)){
             viewHolder.itemTitle.setTextColor(Color.GRAY);
             viewHolder.itemSource.setTextColor(Color.GRAY);
@@ -125,16 +139,11 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
                     viewHolder.publishTime.setTextColor(Color.BLACK);
                     viewHolder.itemAbstract.setTextColor(Color.BLACK);
                 }
-                MainActivity.saver.addNews(news.category,news.newsID);
                 Intent intent = new Intent();
                 intent.putExtra("News",news.toJson());
                 intent.setClass(activity, NewsActivity.class);
                 activity.startActivity(intent);
-                try {
-                    new FileHandler().store(news);
-                } catch (Exception e){
 
-                }
             }
         });
 

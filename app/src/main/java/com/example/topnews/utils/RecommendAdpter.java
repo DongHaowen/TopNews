@@ -71,6 +71,7 @@ public class RecommendAdpter {
             serverHandler.setEndDate(GetDate.getCurrentDate());
             serverHandler.setWords(keyword);
             Page page = serverHandler.getPage();
+            if(page == null) return;
             // Log.d(TAG,"PageSize:"+String.valueOf(page.getPageSize()));
             for (int i = 0; i < page.getPageSize(); ++i) {
                 // Log.d(TAG, page.getNews(i).title);

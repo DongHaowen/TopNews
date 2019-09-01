@@ -83,7 +83,7 @@ public class News {
 	public ScoreWord[] getKeywords(){
 		return keywords;
 	}
-	
+
 	double getScore(final String key) {
 		if (!mapped) buildMap();
 		return scoreMap.get(key);

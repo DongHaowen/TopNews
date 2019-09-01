@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
+import com.example.topnews.fragment.LocalFragment;
 import com.example.topnews.fragment.NewsFragment;
 import com.example.topnews.utils.GetWidth;
 import com.example.topnews.utils.RecordHandler;
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     ImageView shadeLeft;
     ImageView shadeRight;
     private Toolbar toolbar;
+    private BroadcastReceiver webListener;
 
     private BroadcastReceiver receiver;
 
@@ -86,6 +91,22 @@ public class MainActivity extends AppCompatActivity
         base = this;
 
         // JiebaSegmenter.init(this);
+
+    }
+
+    private void setWebListener(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        webListener = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("WebChange","WebChange");
+                columnChange();
+            }
+        };
+        registerReceiver(webListener,filter);
     }
 
     private void setListener(){
@@ -195,7 +216,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void selectTab(int tab_postion) {
+    public void selectTab(int tab_postion) {
         columnSelectIndex = tab_postion;
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
             View checkView = radioGroup.getChildAt(tab_postion);
@@ -221,6 +242,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private boolean isNetworkConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        if(info != null){
+            return info.isConnected();
+        }
+        return false;
+    }
+
     private void initFragment() {
         fragments.clear();
         int cnt = userChannelList.size();
@@ -229,9 +259,15 @@ public class MainActivity extends AppCompatActivity
             data.putString("text", userChannelList.get(i).name);
             data.putInt("id", userChannelList.get(i).id);
             data.putBoolean("gray",true);
-            NewsFragment newsFragment = new NewsFragment();
-            newsFragment.setArguments(data);
-            fragments.add(newsFragment);
+            if(isNetworkConnected()) {
+                NewsFragment newsFragment = new NewsFragment();
+                newsFragment.setArguments(data);
+                fragments.add(newsFragment);
+            }else {
+                LocalFragment localFragment = new LocalFragment();
+                localFragment.setArguments(data);
+                fragments.add(localFragment);
+            }
         }
         NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
@@ -259,6 +295,7 @@ public class MainActivity extends AppCompatActivity
         favorite.save();
         saver.save();;
         unregisterReceiver(receiver);
+        unregisterReceiver(webListener);
     }
 
     @Override

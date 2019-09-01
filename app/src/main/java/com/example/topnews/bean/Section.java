@@ -14,6 +14,7 @@ public class Section {
         items = new ArrayDeque<>();
     }
     public void add(final String newsID){
+        if(items.contains(newsID)) return;
         items.add(newsID);
         if(items.size() > cacheLimit)
             items.remove();
