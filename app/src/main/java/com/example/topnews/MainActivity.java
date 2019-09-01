@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -17,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
+    static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,22 +97,6 @@ public class MainActivity extends AppCompatActivity
         base = this;
 
         // JiebaSegmenter.init(this);
-
-    }
-
-    private void setWebListener(){
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-
-        webListener = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d("WebChange","WebChange");
-                columnChange();
-            }
-        };
-        registerReceiver(webListener,filter);
     }
 
     private void setListener(){
@@ -296,7 +286,6 @@ public class MainActivity extends AppCompatActivity
         favorite.save();
         saver.save();;
         unregisterReceiver(receiver);
-        unregisterReceiver(webListener);
     }
 
     @Override
@@ -359,6 +348,22 @@ public class MainActivity extends AppCompatActivity
             Log.d(NAVI_TAG,"Share");
         } else if (id == R.id.nav_send) {
             Log.d(NAVI_TAG,"Send");
+            int currentNightMode = getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK;
+            switch (currentNightMode) {
+                case Configuration.UI_MODE_NIGHT_NO:
+                    // Night mode is not active, we're in day time
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    recreate();
+                case Configuration.UI_MODE_NIGHT_YES:
+                    // Night mode is active, we're at night!
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    recreate();
+                case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                    // We don't know what mode we're in, assume notnight
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    recreate();
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
