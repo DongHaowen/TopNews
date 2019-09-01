@@ -71,7 +71,7 @@ public class ServerHandler {
 		BufferedReader buffer = new BufferedReader(reader);
 		
 		String json = "";
-		// while(buffer.ready()) json += buffer.readLine();
+
 		json = buffer.readLine();
 		buffer.close();
 		return json;
@@ -84,6 +84,7 @@ public class ServerHandler {
 		} catch (IOException e){
 			return null;
 		}
+		// Log.d("ServerHandler",json);
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.create();
 		Page page = gson.fromJson(json, Page.class);

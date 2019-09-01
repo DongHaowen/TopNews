@@ -7,7 +7,7 @@ public class Page {
 	String currentPage;
 	
 	public int getPageSize() {
-		return Integer.parseInt(pageSize);
+		return total;
 	}
 	
 	public int getCurrentPage() {

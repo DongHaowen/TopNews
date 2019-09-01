@@ -4,12 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class News {
-	class ScoreWord {
-		double score;
-		String word;
+	public class ScoreWord {
+		public double score;
+		public String word;
 		
 		@Override
 		public int hashCode() {
@@ -77,6 +78,10 @@ public class News {
 			linkMap.put(link.mention, link);
 		}
 		mapped = true;
+	}
+
+	public ScoreWord[] getKeywords(){
+		return keywords;
 	}
 	
 	double getScore(final String key) {

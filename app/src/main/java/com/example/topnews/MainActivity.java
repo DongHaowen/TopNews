@@ -38,6 +38,8 @@ import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
 
+import jackmego.com.jieba_android.JiebaSegmenter;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -79,9 +81,11 @@ public class MainActivity extends AppCompatActivity
         channelWidth = screenWidth / 7;
 
         setListener();
-        intialView();
+        initView();
         columnChange();
         base = this;
+
+        // JiebaSegmenter.init(this);
     }
 
     private void setListener(){
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         registerReceiver(receiver,filter);
     }
 
-    void intialView(){
+    void initView(){
         scrollView = findViewById(R.id.scroll_view);
         radioGroup = findViewById(R.id.radio_group);
         moreColumns = findViewById(R.id.more_columns);
