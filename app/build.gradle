@@ -39,7 +39,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.topnews"
-        minSdkVersion 22
+        minSdkVersion 28
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

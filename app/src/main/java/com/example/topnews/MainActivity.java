@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+        toolbar.setTitle("Odd News");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
