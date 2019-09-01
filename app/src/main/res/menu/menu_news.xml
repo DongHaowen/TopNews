@@ -6,4 +6,9 @@
         android:icon="@drawable/star_empty"
         android:title="favorite"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/share_btn"
+        android:icon="@drawable/ic_menu_share"
+        android:title="share"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -35,6 +35,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPageChangeListener {
     private News news = null;
     private VideoView videoView = null;
@@ -184,9 +186,9 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                if(menuItem.getItemId() == R.id.favorite_btn){
+                if (menuItem.getItemId() == R.id.favorite_btn) {
                     Log.d("MenuClick","Favorite Button");
-                    if(MainActivity.favorite.has(news.newsID)){
+                    if(MainActivity.favorite.has(news.newsID)) {
                         MainActivity.favorite.remove(news.newsID);
                         toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_empty);
                     }else{
@@ -194,6 +196,8 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
                         toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_full);
                     }
                     MainActivity.favorite.save();
+                } else if (menuItem.getItemId() == R.id.share_btn) {
+                    showShare();
                 }
                 return false;
             }
@@ -216,4 +220,29 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     @Override
     public void onPageScrollStateChanged(int state) { }
 
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+        // title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle(news.title);
+        // titleUrl QQ和QQ空间跳转链接
+//        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("GET SOME ABSTRACT");
+        // imagePath是图片的本地路径，确保SDcard下面存在此张图片
+
+        for (File img : new ImageHandler(this).loadImage(news.newsID)) {
+            Log.d("share", "showShare: " + img.getAbsolutePath());
+            try {
+                oks.setImagePath(img.getAbsolutePath());
+                break;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // url在微信、Facebook等平台中使用
+//        oks.setUrl("http://sharesdk.cn");
+        // 启动分享GUI
+        oks.show(this);
+    }
 }
