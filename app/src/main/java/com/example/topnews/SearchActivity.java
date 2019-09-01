@@ -3,7 +3,11 @@ package com.example.topnews;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import java.util.ArrayList;
+
+import jackmego.com.jieba_android.JiebaSegmenter;
 import scut.carson_ho.searchview.ICallBack;
 import scut.carson_ho.searchview.SearchView;
 import scut.carson_ho.searchview.bCallBack;
@@ -41,8 +45,6 @@ public class SearchActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
     }
 }
