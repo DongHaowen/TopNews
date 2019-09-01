@@ -174,7 +174,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
 
         setContentView(R.layout.activity_news);
         toolbar = (Toolbar) findViewById(R.id.toolbar_news);
-        toolbar.inflateMenu(R.menu.news_menu);
+        toolbar.inflateMenu(R.menu.menu_news);
 
         if(MainActivity.favorite.has(news.newsID))
             toolbar.getMenu().findItem(R.id.favorite_btn).setIcon(R.drawable.star_full);

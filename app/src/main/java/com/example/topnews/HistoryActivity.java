@@ -33,7 +33,7 @@ public class HistoryActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.result_view_pager);
         viewPager.setCurrentItem(0);
         TextView title = findViewById(R.id.record_title);
-        title.setText("History");
+        title.setText("历史记录");
         initFragment();
     }
 

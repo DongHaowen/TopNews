@@ -1,16 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.topnews.NewsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search_btn"
-        android:orderInCategory="100"
-        android:title="search_btn"
-        android:icon="@mipmap/ic_search_white_36dp"
+        android:id="@+id/favorite_btn"
+        android:icon="@drawable/star_empty"
+        android:title="favorite"
         app:showAsAction="ifRoom" />
-    <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="never" />-->
 </menu>

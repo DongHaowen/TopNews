@@ -2,6 +2,8 @@ package com.example.topnews.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,11 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
     ArrayList<News> newsList;
     Activity activity;
     LayoutInflater inflater = null;
+    private boolean grayable = false;
+
+    public void setGray(){
+        grayable = true;
+    }
 
     public NewsAdapter(ArrayList<News> newsList, Activity activity) {
         this.newsList = newsList;
@@ -70,7 +77,7 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         View view = convertView;
         if (view == null) {
             view = inflater.inflate(R.layout.list_item, null);
@@ -87,19 +94,41 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
             viewHolder = (ViewHolder) view.getTag();
         }
         final News news = getItem(position);
+        if(grayable && MainActivity.history.has(news.newsID)){
+            viewHolder.itemTitle.setTextColor(Color.GRAY);
+            viewHolder.itemSource.setTextColor(Color.GRAY);
+            viewHolder.publishTime.setTextColor(Color.GRAY);
+            viewHolder.itemAbstract.setTextColor(Color.GRAY);
+        }else {
+            viewHolder.itemTitle.setTextColor(Color.BLACK);
+            viewHolder.itemSource.setTextColor(Color.BLACK);
+            viewHolder.publishTime.setTextColor(Color.BLACK);
+            viewHolder.itemAbstract.setTextColor(Color.BLACK);
+        }
         viewHolder.itemTitle.setText(news.title);
         viewHolder.itemSource.setText(news.publisher);
         viewHolder.publishTime.setText(news.publishTime);
-        viewHolder.itemAbstract.setText("GET SOME ABSTRACT");
+        viewHolder.itemAbstract.setText(news.content);
         viewHolder.rightPaddingView.setVisibility(View.VISIBLE);
         viewHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.history.add(news.newsID);
+                if(grayable && MainActivity.history.has(news.newsID)){
+                    viewHolder.itemTitle.setTextColor(Color.GRAY);
+                    viewHolder.itemSource.setTextColor(Color.GRAY);
+                    viewHolder.publishTime.setTextColor(Color.GRAY);
+                    viewHolder.itemAbstract.setTextColor(Color.GRAY);
+                }else {
+                    viewHolder.itemTitle.setTextColor(Color.BLACK);
+                    viewHolder.itemSource.setTextColor(Color.BLACK);
+                    viewHolder.publishTime.setTextColor(Color.BLACK);
+                    viewHolder.itemAbstract.setTextColor(Color.BLACK);
+                }
                 Intent intent = new Intent();
                 intent.putExtra("News",news.toJson());
                 intent.setClass(activity, NewsActivity.class);
                 activity.startActivity(intent);
-                MainActivity.history.add(news.newsID);
                 try {
                     new FileHandler().store(news);
                 } catch (Exception e){

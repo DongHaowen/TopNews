@@ -33,7 +33,7 @@ public class FavoriteActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.result_view_pager);
         viewPager.setCurrentItem(0);
         TextView title = findViewById(R.id.record_title);
-        title.setText("Favorite");
+        title.setText("我的收藏");
         initFragment();
     }
 

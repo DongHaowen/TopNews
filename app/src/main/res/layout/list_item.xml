@@ -41,7 +41,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginLeft="4.0dip"
                         android:layout_marginTop="3.0dip"
-                        android:background="@drawable/small_image_holder_listpage"
+                        android:background="@mipmap/image_holder"
                         android:scaleType="fitXY" />
 
                     <ImageView
@@ -111,6 +111,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4.0dip"
                 android:layout_marginRight="7.0dip"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:lineSpacingExtra="4.0dip" />
 
         </LinearLayout>

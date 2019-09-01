@@ -39,6 +39,9 @@ public class NewsFragment extends Fragment {
     public final static int SET_NEWSLIST = 0;
     public final static int MORE_NEWS = 1;
     int moreTimes = 0;
+    private final int newsListSize = 30;
+
+    public boolean grayable = false;
 
     RefreshLayout refreshLayout;
 
@@ -48,6 +51,7 @@ public class NewsFragment extends Fragment {
         Bundle args = getArguments();
         text = args != null ? args.getString("text") : "";
         categoryId = args != null ? args.getInt("id", 0) : 0;
+        grayable = args != null ? args.getBoolean("gray"):false;
         initData();
         super.onCreate(savedInstanceState);
     }
@@ -119,7 +123,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
-                serverHandler.setSize(100);
+                serverHandler.setSize(newsListSize);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
                 while (page == null) {
@@ -146,14 +150,14 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
-                serverHandler.setSize(100 + 10 * moreTimes);
+                serverHandler.setSize(newsListSize + 10 * moreTimes);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
                 try {
                     page = serverHandler.getPage();
                     news = page.data;
                     Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
-                    for (int i = 100 + 10 * (moreTimes - 1); i < 100 + 10 * moreTimes; i++) {
+                    for (int i = newsList.size(); i < news.length; i++) {
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();
@@ -174,7 +178,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
-                serverHandler.setSize(100);
+                serverHandler.setSize(newsListSize);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
                 while (page == null) {
@@ -202,6 +206,7 @@ public class NewsFragment extends Fragment {
                     detail_loading.setVisibility(View.GONE);
 //                    if (adapter == null) {
                         adapter = new NewsAdapter(newsList, activity);
+                        if(grayable) adapter.setGray();
 //                    }
                     int currentPos = headListView.getFirstVisiblePosition();
                     headListView.setAdapter(adapter);

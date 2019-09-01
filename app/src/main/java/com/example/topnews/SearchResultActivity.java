@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.bean.Category;
@@ -29,6 +30,8 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_record);
         keywords = getIntent().getStringExtra("keywords");
+        TextView view = findViewById(R.id.record_title);
+        view.setText("搜索结果");
 
         initView();
     }

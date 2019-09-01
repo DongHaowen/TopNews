@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         toolbar = findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_news);
+        toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity
             Bundle data = new Bundle();
             data.putString("text", userChannelList.get(i).name);
             data.putInt("id", userChannelList.get(i).id);
+            data.putBoolean("gray",true);
             NewsFragment newsFragment = new NewsFragment();
             newsFragment.setArguments(data);
             fragments.add(newsFragment);
@@ -298,8 +299,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_search) {
             // Handle the camera action
+            Intent intent = new Intent();
+            intent.setClass(getBaseContext(),SearchActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_favorite) {
             Log.d(NAVI_TAG,"Favorite");
             Intent intent = new Intent();
