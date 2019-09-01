@@ -2,7 +2,10 @@ package com.example.topnews;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -21,19 +24,28 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.bean.HyperLink;
 import com.example.topnews.bean.HyperLinkSpan;
 import com.example.topnews.bean.MarqueeText;
 import com.example.topnews.bean.News;
+import com.example.topnews.fragment.NewsFragment;
+import com.example.topnews.fragment.RecommendFragment;
+import com.example.topnews.fragment.RecordFragment;
+import com.example.topnews.utils.FileHandler;
 import com.example.topnews.utils.ImageHandler;
+import com.example.topnews.utils.RecommendAdpter;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jackmego.com.jieba_android.JiebaSegmenter;
 
 public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPageChangeListener {
     private News news = null;
@@ -44,6 +56,8 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     private Set<String> loaded = new HashSet<>();
     private static int REQUEST_CODE=1;
     private Toolbar toolbar;
+    private ViewPager viewPager;
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     private boolean favorite = false;
 
@@ -205,7 +219,36 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         updateNews();
         updateImages();
         initVideo();
+        initRecommend();
     }
+
+    private void initRecommend(){
+        viewPager = findViewById(R.id.result_view_pager);
+        viewPager.setCurrentItem(0);
+        TextView textView = findViewById(R.id.record_title);
+        textView.setText("相关推荐");
+        textView.setTextSize(32);
+
+        fragments.clear();
+        RecommendFragment fragment = new RecommendFragment();
+        fragment.setAdapter(new RecommendAdpter(news));
+        fragments.add(fragment);
+        NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(pageChangeListener);
+    }
+
+    public ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int i, float v, int i1) { }
+
+        @Override
+        public void onPageSelected(int i) { }
+
+        @Override
+        public void onPageScrollStateChanged(int i) { }
+    };
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }

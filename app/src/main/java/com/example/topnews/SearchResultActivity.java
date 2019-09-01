@@ -51,23 +51,5 @@ public class SearchResultActivity extends AppCompatActivity {
         fragments.add(newsFragment);
         NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(pageChangeListener);
     }
-
-    public ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int i, float v, int i1) {
-
-        }
-
-        @Override
-        public void onPageSelected(int i) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int i) {
-
-        }
-    };
 }

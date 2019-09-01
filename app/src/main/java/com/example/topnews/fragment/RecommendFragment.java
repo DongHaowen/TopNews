@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,18 +18,16 @@ import com.example.topnews.adapter.NewsAdapter;
 import com.example.topnews.bean.News;
 import com.example.topnews.bean.Page;
 import com.example.topnews.utils.FileHandler;
-import com.example.topnews.utils.GetDate;
+import com.example.topnews.utils.RecommendAdpter;
 import com.example.topnews.utils.RecordAdpter;
-import com.example.topnews.utils.RecordHandler;
 import com.example.topnews.utils.ServerHandler;
 import com.example.topnews.view.HeadListView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class RecordFragment extends Fragment {
+public class RecommendFragment extends Fragment {
     private final static String TAG = "NewsFragment";
     Activity activity;
     ArrayList<News> newsList = new ArrayList<>();
@@ -43,12 +40,14 @@ public class RecordFragment extends Fragment {
     //Toast提示框
     private RelativeLayout notify_view;
     private TextView notify_view_text;
-    int count = 0;
-    private RecordAdpter src;
+
+    private RecommendAdpter src;
+
+    final static int showLimit = 5;
 
     RefreshLayout refreshLayout;
 
-    public void setAdapter(RecordAdpter src){
+    public void setAdapter(RecommendAdpter src){
         this.src = src;
     }
 
@@ -89,29 +88,9 @@ public class RecordFragment extends Fragment {
 
         refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setEnableRefresh(false);
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
-                getMoreData();
-            }
-        });
-        return view;
-    }
+        refreshLayout.setEnableLoadMore(false);
 
-    public void getMoreData() {
-        count += 10;
-        String newsID = null;
-        while ((newsID = src.next()) != null && newsList.size() < count){
-            Log.d("RecordID:",newsID);
-            try {
-                News temp = new FileHandler().load(newsID);
-                if(temp != null) newsList.add(temp);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        handler.obtainMessage(SET_NEWSLIST).sendToTarget();
-        refreshLayout.finishLoadMore();
+        return view;
     }
 
     public ServerHandler serverHandler;
@@ -119,18 +98,18 @@ public class RecordFragment extends Fragment {
     public News[] news;
 
     public void initData() {
-        count = 10;
-        String newsID = null;
-        while ((newsID = src.next()) != null && newsList.size() < count){
-            Log.d("RecordID:",newsID);
-            try {
-                News temp = new FileHandler().load(newsID);
-                if(temp != null) newsList.add(temp);
-            } catch (Exception e){
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                News news = null;
+                src.recommend();
+                while ((news = src.next()) != null){
+                    Log.d("RecordID:",news.newsID);
+                    newsList.add(news);
+                }
+                handler.obtainMessage(SET_NEWSLIST).sendToTarget();
             }
-        }
-        handler.obtainMessage(SET_NEWSLIST).sendToTarget();
+        }).start();
     }
 
     Handler handler = new Handler() {
@@ -138,9 +117,11 @@ public class RecordFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SET_NEWSLIST:
+                    Log.d(TAG, "handleMessage: " + newsList.size());
                     detail_loading.setVisibility(View.GONE);
 //                    if (adapter == null) {
                     adapter = new NewsAdapter(newsList, activity);
+                    adapter.setGray();
 //                    }
                     int currentPos = headListView.getFirstVisiblePosition();
                     headListView.setAdapter(adapter);
