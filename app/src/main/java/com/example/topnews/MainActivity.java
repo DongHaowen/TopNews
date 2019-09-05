@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,8 @@ import android.widget.Toast;
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
+import com.example.topnews.data.LoginDataSource;
+import com.example.topnews.data.model.LoggedInUser;
 import com.example.topnews.fragment.LocalFragment;
 import com.example.topnews.fragment.NewsFragment;
 import com.example.topnews.ui.login.LoginActivity;
@@ -67,8 +70,9 @@ public class MainActivity extends AppCompatActivity
 
     final static int REQUEST_CODE = 1;
 
-    public final static RecordHandler history = new RecordHandler("history");
-    public final static RecordHandler favorite = new RecordHandler("favorite");
+    public static LoggedInUser user = LoggedInUser.defaultUser;
+    public static RecordHandler history = new RecordHandler("history");
+    public static RecordHandler favorite = new RecordHandler("favorite");
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
@@ -76,6 +80,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -113,10 +121,12 @@ public class MainActivity extends AppCompatActivity
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d("TimeClick","Save all");
                 String action = intent.getAction();
                 if(action.equals(Intent.ACTION_TIME_TICK)) {
                     history.save();
                     favorite.save();
+                    new LoginDataSource().remoteUpdate(user);
                 }
             }
         };
@@ -289,10 +299,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         history.save();
         favorite.save();
-        saver.save();;
+        saver.save();
+        new LoginDataSource().remoteUpdate(user);
+        super.onDestroy();
+
         unregisterReceiver(receiver);
         unregisterReceiver(webListener);
     }
@@ -366,5 +378,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setUser(){
+        if(user != LoggedInUser.defaultUser)
+            toolbar.setTitle(user.getUserId());
     }
 }
