@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#005048</color>
+    <color name="colorPrimaryDark">#001F1A</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="default_text">#B4B4B4</color>
+
+    <color name="title_text_color">#ffffffff</color>
+
+    <color name="activity_bg_color">#272727</color>
+
+    <color name="top_category_scroll_view_text_normal_day">#ff909090</color>
+
+    <color name="divider_day">#ffdddddd</color>
+
+    <color name="image_loading_bg">#ffefefef</color>
+
+    <color name="item_title">#ff444444</color>
+
+    <color name="ss_comment_time">#ff999999</color>
+
+    <color name="item_abstract">#ff444444</color>
+
+</resources>
