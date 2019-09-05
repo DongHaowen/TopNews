@@ -309,9 +309,9 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         oks.disableSSOWhenAuthorize();
 
 // title标题，微信、QQ和QQ空间等平台使用
-        oks.setTitle("title");
+        oks.setTitle(news.title);
 // text是分享文本，所有平台都需要这个字段
-        oks.setText("abstract");
+        oks.setText(news.getAbstract());
 // imagePath是图片的本地路径，确保SDcard下面存在此张图片
 
         try {
