@@ -2,40 +2,28 @@ package com.example.topnews;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
-import com.bluejamesbond.text.DocumentView;
-import com.bluejamesbond.text.style.TextAlignment;
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
-import com.example.topnews.bean.HyperLink;
-import com.example.topnews.bean.HyperLinkSpan;
 import com.example.topnews.bean.MarqueeText;
 import com.example.topnews.bean.News;
-import com.example.topnews.fragment.NewsFragment;
 import com.example.topnews.fragment.RecommendFragment;
-import com.example.topnews.fragment.RecordFragment;
-import com.example.topnews.utils.FileHandler;
 import com.example.topnews.utils.ImageHandler;
 import com.example.topnews.utils.RecommendAdpter;
 import com.example.topnews.utils.UIModeUtil;
@@ -44,18 +32,20 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import cn.jzvd.JZVideoPlayerStandard;
+import cn.sharesdk.framework.Platform;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
-import jackmego.com.jieba_android.JiebaSegmenter;
+import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 
 public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPageChangeListener {
+
     private News news = null;
-    private VideoView videoView = null;
     private MediaController mediaController = null;
     private int imageLength = 0;
     private File[] imagesSrc;
@@ -159,41 +149,39 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         slider.addOnPageChangeListener(this);
     }
 
-    private SeekBar.OnSeekBarChangeListener change = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            int prog = seekBar.getProgress();
-            if(videoView != null && videoView.isPlaying())
-                videoView.seekTo(prog);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
-
     void initVideo(){
-        final RelativeLayout video_part = findViewById(R.id.video_part);
-        if(news.video.equals("")) video_part.setVisibility(View.GONE);
-        videoView = findViewById(R.id.video_view);
-        mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-        videoView.setVideoPath(news.video);
+        if (!news.video.equals("")) {
+            JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
+            jzVideoPlayerStandard.setVisibility(View.VISIBLE);
+            jzVideoPlayerStandard.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
+                    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
+                    news.title);
+        }
+
+//        Glide.with(getBaseContext())
+//                .load("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640")
+//                .into(jzVideoPlayerStandard.thumbImageView);
     }
 
-    void downloadImage(){
-        String[] urls = news.getImage();
-        if(urls == null)
+    @Override
+    public void onBackPressed() {
+        if (JZVideoPlayerStandard.backPress()) {
             return;
-        for (int i = 0 ; i < urls.length ; ++i){
-            new ImageHandler(this).downloadImage(news.newsID,urls[i],i);
+        }
+        super.onBackPressed();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JZVideoPlayerStandard.releaseAllVideos();
+    }
+
+    void downloadImage() {
+        String[] urls = news.getImage();
+        if (urls == null)
+            return;
+        for (int i = 0; i < urls.length; ++i) {
+            new ImageHandler(this).downloadImage(news.newsID, urls[i], i);
         }
     }
 
@@ -290,28 +278,73 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     public void onPageScrollStateChanged(int state) { }
 
     private void showShare() {
-        OnekeyShare oks = new OnekeyShare();
-        // title标题，微信、QQ和QQ空间等平台使用
-        oks.setTitle(news.title);
-        // titleUrl QQ和QQ空间跳转链接
-//        oks.setTitleUrl("http://sharesdk.cn");
-        // text是分享文本，所有平台都需要这个字段
-        oks.setText("GET SOME ABSTRACT");
-        // imagePath是图片的本地路径，确保SDcard下面存在此张图片
 
-        for (File img : new ImageHandler(this).loadImage(news.newsID)) {
-            Log.d("share", "showShare: " + img.getAbsolutePath());
-            try {
-                oks.setImagePath(img.getAbsolutePath());
-                break;
-            } catch (Exception e) {
-                e.printStackTrace();
+//        OnekeyShare oks = new OnekeyShare();
+//        // title标题，微信、QQ和QQ空间等平台使用
+//        oks.setTitle(news.title);
+//        // titleUrl QQ和QQ空间跳转链接
+////        oks.setTitleUrl("http://sharesdk.cn");
+//        // text是分享文本，所有平台都需要这个字段
+//        oks.setText("GET SOME ABSTRACT");
+//        // imagePath是图片的本地路径，确保SDcard下面存在此张图片
+//
+//        for (File img : new ImageHandler(this).loadImage(news.newsID)) {
+//            Log.d("share", "showShare: " + img.getAbsolutePath());
+//            try {
+//                oks.setImagePath(img.getAbsolutePath());
+//                break;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        // url在微信、Facebook等平台中使用
+////        oks.setUrl("http://sharesdk.cn");
+//        // 启动分享GUI
+//        oks.show(this);
+
+
+
+        final OnekeyShare oks = new OnekeyShare();
+        oks.disableSSOWhenAuthorize();
+
+// title标题，微信、QQ和QQ空间等平台使用
+        oks.setTitle("title");
+// text是分享文本，所有平台都需要这个字段
+        oks.setText("abstract");
+// imagePath是图片的本地路径，确保SDcard下面存在此张图片
+
+        try {
+            for (File img : new ImageHandler(this).loadImage(news.newsID)) {
+                Log.d("share", "showShare: " + img.getAbsolutePath());
+                try {
+                    oks.setImagePath(img.getAbsolutePath());
+                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // url在微信、Facebook等平台中使用
-//        oks.setUrl("http://sharesdk.cn");
-        // 启动分享GUI
+
+// url在微信、Facebook等平台中使用
+        oks.setUrl("http://sharesdk.cn");
+
+        oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
+            @Override
+            public void onShare(Platform platform, cn.sharesdk.framework.Platform.ShareParams paramsToShare) {
+                if (Wechat.NAME.equals(platform.getName()) ||
+                        WechatMoments.NAME.equals(platform.getName())) {
+                }
+                if (SinaWeibo.NAME.equals(platform.getName())) {
+                }
+            }
+        });
+
+// 启动分享GUI
         oks.show(this);
+
     }
 }

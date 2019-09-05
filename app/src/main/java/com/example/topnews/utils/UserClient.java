@@ -1,5 +1,7 @@
 package com.example.topnews.utils;
 
+import android.util.Log;
+
 import com.example.topnews.bean.WebPackage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,7 +60,9 @@ public class UserClient extends Thread {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        response = gson.fromJson(reader.readLine(), WebPackage.class);
+        String line = reader.readLine();
+        response = gson.fromJson(line, WebPackage.class);
+        Log.d("UserClient", "receive: " + line);
         reader.close();
         System.out.println("Client Receive");
     }

@@ -105,6 +105,18 @@ public class News {
 		return linkMap;
 	}
 
+	public String getAbstract() {
+		String ret;
+		if (content.length() > 20) {
+			ret = content.substring(0, 20);
+			ret = ret + "...";
+		} else {
+			ret = content;
+			ret.replaceAll("\n", " ");
+		}
+		return ret;
+	}
+
 	@Override
 	public String toString() {
 		return title + "\n" + content;
