@@ -145,7 +145,7 @@ public class LoginDataSource {
         bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
         bundle.setItem(WebPackage.DATA_EXTRA,String.valueOf(MainActivity.history.getModifyTime()));
         userClient.setWebPackage(bundle);
-        userClient.run();
+        userClient.start();
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
@@ -156,7 +156,7 @@ public class LoginDataSource {
         bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
         bundle.setItem(WebPackage.DATA_EXTRA,String.valueOf(gson.toJson(MainActivity.history,RecordHandler.class)));
         userClient.setWebPackage(bundle);
-        userClient.run();
+        userClient.start();
 
         userClient = new UserClient();
         bundle = new WebPackage();
@@ -164,7 +164,7 @@ public class LoginDataSource {
         bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
         bundle.setItem(WebPackage.DATA_EXTRA,String.valueOf(gson.toJson(MainActivity.favorite,RecordHandler.class)));
         userClient.setWebPackage(bundle);
-        userClient.run();
+        userClient.start();
     }
 
     private void remoteToLocal(){
@@ -248,7 +248,6 @@ public class LoginDataSource {
         MainActivity.favorite.updateUser();
         MainActivity.history.load();
         MainActivity.favorite.load();
-        MainActivity.base.columnChange();
         remoteUpdate(MainActivity.user);
     }
 
@@ -266,6 +265,5 @@ public class LoginDataSource {
         MainActivity.favorite.updateUser();
         MainActivity.history.load();
         MainActivity.favorite.load();
-        MainActivity.base.columnChange();
     }
 }

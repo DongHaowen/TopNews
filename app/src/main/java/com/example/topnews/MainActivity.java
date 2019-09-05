@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     ImageView shadeRight;
     private Toolbar toolbar;
     private BroadcastReceiver webListener;
+    private NavigationView naviView;
 
     private BroadcastReceiver receiver;
 
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity
         viewPager = findViewById(R.id.view_pager);
         shadeLeft = findViewById(R.id.shade_left);
         shadeRight = findViewById(R.id.shade_right);
+        naviView = findViewById(R.id.nav_view);
 
         buttonMoreColumns.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +167,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+        toolbar.setTitle("异闻录");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -306,7 +310,8 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
 
         unregisterReceiver(receiver);
-        unregisterReceiver(webListener);
+        if(webListener != null)
+            unregisterReceiver(webListener);
     }
 
     @Override
@@ -369,10 +374,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent();
             intent.setClass(getBaseContext(), LoginActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
-            Log.d(NAVI_TAG,"Share");
-        } else if (id == R.id.nav_send) {
-            Log.d(NAVI_TAG,"Send");
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -381,7 +382,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setUser(){
+        TextView view = findViewById(R.id.user_name);
         if(user != LoggedInUser.defaultUser)
-            toolbar.setTitle(user.getUserId());
+            view.setText(user.getUserId());
+        else
+            view.setText("本地用户");
+
     }
 }

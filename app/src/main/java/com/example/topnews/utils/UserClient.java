@@ -14,7 +14,7 @@ import java.net.Socket;
 
 
 public class UserClient extends Thread {
-    final static String host = "183.172.242.212";
+    final static String host = "192.168.8.105";
     final static int port = 8888;
     Socket socket;
     WebPackage webPackage;
