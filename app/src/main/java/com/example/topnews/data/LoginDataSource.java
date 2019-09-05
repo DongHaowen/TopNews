@@ -218,11 +218,7 @@ public class LoginDataSource {
             Log.d(TAG,favValue);
             if(hisValue != null) {
                 MainActivity.history = gson.fromJson(hisValue, RecordHandler.class);
-                Vector<String> records = MainActivity.history.records;
-
-                for (int i = 0 ; i < records.size() ; ++i){
-                    Log.d(TAG,records.get(i));
-                }
+                MainActivity.history.save();
             }else {
                 MainActivity.history = new RecordHandler("history");
                 MainActivity.history.save();
@@ -231,11 +227,6 @@ public class LoginDataSource {
             if(favValue != null) {
                 MainActivity.favorite = gson.fromJson(favValue, RecordHandler.class);
                 MainActivity.favorite.save();
-                Vector<String> records = MainActivity.favorite.records;
-
-                for (int i = 0 ; i < records.size() ; ++i){
-                    Log.d(TAG,records.get(i));
-                }
             } else {
                 MainActivity.history = new RecordHandler("history");
                 MainActivity.history.save();
@@ -252,22 +243,22 @@ public class LoginDataSource {
     public void remoteUpdate(LoggedInUser user){
         if (user.getUserId().equals("default"))
             return;
+        Log.d(TAG,"REMOTEORLOCAL");
         // 时间戳判断，决定本地与远程的同步关系
         long remote = getModify();
         long local = MainActivity.history.getModifyTime();
         Log.d("RemoteTime:",String.valueOf(remote));
         Log.d("LocalTime",String.valueOf(local));
-        if(local < remote){
+        if(local <= remote){
             remoteToLocal();
-        }else if(local > remote){
+        }else {
             localToRemote();
-        }else{
-            return;
-        }
+        }/**/
     }
 
     public void updateUser(final String username){
         Log.d(TAG,"Update User"+username);
+        if(username.equals(MainActivity.user.getUserId())) return;
         MainActivity.history.save();
         MainActivity.favorite.save();
         MainActivity.user = new LoggedInUser(username);
