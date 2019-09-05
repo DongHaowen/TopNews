@@ -40,6 +40,7 @@ import com.example.topnews.fragment.NewsFragment;
 import com.example.topnews.utils.GetWidth;
 import com.example.topnews.utils.RecordHandler;
 import com.example.topnews.utils.StateSaver;
+import com.example.topnews.utils.UIModeUtil;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity
     ImageView shadeLeft;
     ImageView shadeRight;
     private Toolbar toolbar;
-    private BroadcastReceiver webListener;
 
     private BroadcastReceiver receiver;
 
@@ -75,9 +75,7 @@ public class MainActivity extends AppCompatActivity
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
-    static {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-    }
+    private int mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +95,22 @@ public class MainActivity extends AppCompatActivity
         base = this;
 
         // JiebaSegmenter.init(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int uiMode = getResources().getConfiguration().uiMode;
+        int dayNightUiMode = uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        if (dayNightUiMode == Configuration.UI_MODE_NIGHT_NO) {
+            mDayNightMode = AppCompatDelegate.MODE_NIGHT_NO;
+        } else if (dayNightUiMode == Configuration.UI_MODE_NIGHT_YES) {
+            mDayNightMode = AppCompatDelegate.MODE_NIGHT_YES;
+        } else {
+            mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
+        }
     }
 
     private void setListener(){
@@ -344,26 +358,14 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_tools) {
             Log.d(NAVI_TAG, "Tools");
-        } else if (id == R.id.nav_share) {
-            Log.d(NAVI_TAG,"Share");
-        } else if (id == R.id.nav_send) {
-            Log.d(NAVI_TAG,"Send");
-            int currentNightMode = getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK;
-            switch (currentNightMode) {
-                case Configuration.UI_MODE_NIGHT_NO:
-                    // Night mode is not active, we're in day time
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    recreate();
-                case Configuration.UI_MODE_NIGHT_YES:
-                    // Night mode is active, we're at night!
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    recreate();
-                case Configuration.UI_MODE_NIGHT_UNDEFINED:
-                    // We don't know what mode we're in, assume notnight
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    recreate();
-            }
+        } else if (id == R.id.day_mode) {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            UIModeUtil.getInstance().setMode(1);
+            recreate();
+        } else if (id == R.id.night_mode) {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            UIModeUtil.getInstance().setMode(2);
+            recreate();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

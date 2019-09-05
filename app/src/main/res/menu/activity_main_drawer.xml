@@ -22,16 +22,31 @@
             android:title="@string/menu_tools" />
     </group>
 
-    <item android:title="Communicate">
+<!--    <item android:title="Communicate">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_share"-->
+<!--                android:icon="@drawable/ic_menu_share"-->
+<!--                android:title="@string/menu_share" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_send"-->
+<!--                android:icon="@drawable/ic_menu_send"-->
+<!--                android:title="@string/menu_send" />-->
+<!--        </menu>-->
+<!--    </item>-->
+
+    <item android:title="主题">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
+                android:id="@+id/day_mode"
+                android:icon="@mipmap/ic_wb_sunny_black_48dp"
+                android:title="@string/day_mode"
+            />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:id="@+id/night_mode"
+                android:icon="@mipmap/baseline_nights_stay_black_48"
+                android:title="@string/night_mode"
+                />
         </menu>
     </item>
 

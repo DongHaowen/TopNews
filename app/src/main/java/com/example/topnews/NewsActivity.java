@@ -38,6 +38,7 @@ import com.example.topnews.fragment.RecordFragment;
 import com.example.topnews.utils.FileHandler;
 import com.example.topnews.utils.ImageHandler;
 import com.example.topnews.utils.RecommendAdpter;
+import com.example.topnews.utils.UIModeUtil;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
@@ -200,6 +201,9 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UIModeUtil.getInstance().changeModeUI(this);
+
         getNews();
         if(news == null)
             this.finish();

@@ -21,4 +21,6 @@
     <string name="menu_tools">登录</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="day_mode">白天</string>
+    <string name="night_mode">黑夜</string>
 </resources>

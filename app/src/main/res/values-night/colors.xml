@@ -22,4 +22,6 @@
 
     <color name="item_abstract">#ff444444</color>
 
+    <color name="item_pressed">#1B1B1B</color>
+
 </resources>
