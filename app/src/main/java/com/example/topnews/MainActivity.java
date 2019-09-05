@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
+    public static String host = "192.168.8.105";
+
     private int mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
 
     @Override
@@ -409,6 +411,9 @@ public class MainActivity extends AppCompatActivity
             view.setText(user.getUserId());
         else
             view.setText("本地用户");
+    }
 
+    public static boolean runLocal(){
+        return user == LoggedInUser.defaultUser;
     }
 }

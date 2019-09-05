@@ -14,10 +14,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.topnews.MainActivity;
 import com.example.topnews.R;
 import com.example.topnews.adapter.NewsAdapter;
 import com.example.topnews.bean.News;
 import com.example.topnews.bean.Page;
+import com.example.topnews.utils.BackupHandler;
 import com.example.topnews.utils.FileHandler;
 import com.example.topnews.utils.GetDate;
 import com.example.topnews.utils.RecordAdpter;
@@ -29,6 +31,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
 
 public class RecordFragment extends Fragment {
     private final static String TAG = "NewsFragment";
@@ -105,6 +108,9 @@ public class RecordFragment extends Fragment {
             Log.d("RecordID:",newsID);
             try {
                 News temp = new FileHandler().load(newsID);
+                if(temp == null && !MainActivity.runLocal()){
+                    temp = new BackupHandler().revert(newsID);
+                }
                 if(temp != null) newsList.add(temp);
             } catch (Exception e){
                 e.printStackTrace();
@@ -125,6 +131,9 @@ public class RecordFragment extends Fragment {
             Log.d("RecordID:",newsID);
             try {
                 News temp = new FileHandler().load(newsID);
+                if(temp == null && !MainActivity.runLocal()){
+                    temp = new BackupHandler().revert(newsID);
+                }
                 if(temp != null) newsList.add(temp);
             } catch (Exception e){
                 e.printStackTrace();

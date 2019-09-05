@@ -20,6 +20,7 @@ import com.example.topnews.NewsActivity;
 import com.example.topnews.R;
 import com.example.topnews.bean.News;
 
+import com.example.topnews.utils.BackupHandler;
 import com.example.topnews.utils.FileHandler;
 import com.example.topnews.view.HeadListView;
 
@@ -128,6 +129,9 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
             @Override
             public void onClick(View v) {
                 MainActivity.history.add(news.newsID);
+                if(!MainActivity.runLocal()){
+                    new BackupHandler().backup(news);
+                }
                 if(grayable && MainActivity.history.has(news.newsID)){
                     viewHolder.itemTitle.setTextColor(Color.GRAY);
                     viewHolder.itemSource.setTextColor(Color.GRAY);
