@@ -13,23 +13,23 @@ MobSDK {
                 bypassApproval true
             }
             Wechat {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                appId "wxbff53622f68922c8"
+                appSecret "d2c27e775b9b08a60f5fb39511153092"
                 userName "gh_afb25ac019c9"
                 path "pages/index/index.html?id=1"
                 withShareTicket true
                 miniprogramType 2
-                bypassApproval true
+                bypassApproval false
             }
             WechatMoments {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
-                bypassApproval true
+                appId "wxbff53622f68922c8"
+                appSecret "d2c27e775b9b08a60f5fb39511153092"
+                bypassApproval false
             }
             WechatFavorite {
-                appId "wx4868b35061f87885"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
-                bypassApproval true
+                appId "wxbff53622f68922c8"
+                appSecret "d2c27e775b9b08a60f5fb39511153092"
+                bypassApproval false
             }
         }
     }
@@ -76,4 +76,6 @@ dependencies {
     implementation 'com.carson_ho:SearchLayout:1.0.1'
     implementation 'jackmego.com.jieba_android:jieba_android-release:0.1.0'
     implementation 'com.github.bluejamesbond:textjustify-android:2.1.0'
+
+    implementation 'cn.jzvd:jiaozivideoplayer:6.2.12'
 }
