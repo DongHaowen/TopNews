@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TopNews</string>
+    <string name="app_name">OddNews</string>
 
     <string name="label_cancel_dislike">撤销</string>
     <string name="large_text">Hello world.</string>

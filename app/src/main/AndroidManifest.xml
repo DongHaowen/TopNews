@@ -12,9 +12,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/icon_new"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/icon_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
@@ -33,11 +33,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ChannelActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".SearchResultActivity" />
-        <activity android:name=".FavoriteActivity" />
-        <activity android:name=".HistoryActivity" />
+        <activity android:name=".ChannelActivity"/>
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".SearchResultActivity"/>
+        <activity android:name=".FavoriteActivity"/>
+        <activity android:name=".HistoryActivity"/>
     </application>
 
 </manifest>
