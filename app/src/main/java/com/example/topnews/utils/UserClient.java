@@ -2,6 +2,7 @@ package com.example.topnews.utils;
 
 import android.util.Log;
 
+import com.example.topnews.MainActivity;
 import com.example.topnews.bean.WebPackage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,7 +17,7 @@ import java.net.Socket;
 
 
 public class UserClient extends Thread {
-    final static String host = "192.168.8.105";
+    final static String host = MainActivity.host;
     final static int port = 8888;
     Socket socket;
     WebPackage webPackage;

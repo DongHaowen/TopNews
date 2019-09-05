@@ -2,6 +2,7 @@ package com.example.topnews.utils;
 
 import android.util.Log;
 
+import com.example.topnews.MainActivity;
 import com.example.topnews.bean.News;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +18,7 @@ import java.util.TimerTask;
 
 class NewsUploadThread extends  Thread {
     News news = null;
-    final static String host = "192.168.8.105";
+    final static String host = MainActivity.host;
     final static int port = 8890;
     NewsUploadThread(News news){
         this.news = news;
@@ -41,7 +42,7 @@ class NewsUploadThread extends  Thread {
 class NewsDownloadThread extends Thread{
     News news = null;
     String newsID = null;
-    final static String host = "192.168.8.105";
+    final static String host = MainActivity.host;
     final static int port = 8889;
     NewsDownloadThread(final String newsID){
         this.newsID = newsID;
@@ -51,11 +52,11 @@ class NewsDownloadThread extends Thread{
     public void run() {
         try {
             Socket socket = new Socket(host,port);
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"));
             writer.write(newsID + "\n");
             writer.flush();
             // Log.d("TargetSend",newsID);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
             String json = reader.readLine();
             // Log.d("TargetGet",newsID);
             Gson gson = new GsonBuilder().create();
