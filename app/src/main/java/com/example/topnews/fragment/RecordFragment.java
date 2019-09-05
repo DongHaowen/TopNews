@@ -105,7 +105,7 @@ public class RecordFragment extends Fragment {
         count += 10;
         String newsID = null;
         while ((newsID = src.next()) != null && newsList.size() < count){
-            Log.d("RecordID:",newsID);
+            // Log.d("RecordID:",newsID);
             try {
                 News temp = new FileHandler().load(newsID);
                 if(temp == null && !MainActivity.runLocal()){
@@ -128,7 +128,7 @@ public class RecordFragment extends Fragment {
         count = 10;
         String newsID = null;
         while ((newsID = src.next()) != null && newsList.size() < count){
-            Log.d("RecordID:",newsID);
+            // Log.d("RecordID:",newsID);
             try {
                 News temp = new FileHandler().load(newsID);
                 if(temp == null && !MainActivity.runLocal()){

@@ -53,8 +53,11 @@ class NewsDownloadThread extends Thread{
             Socket socket = new Socket(host,port);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             writer.write(newsID + "\n");
+            writer.flush();
+            // Log.d("TargetSend",newsID);
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String json = reader.readLine();
+            // Log.d("TargetGet",newsID);
             Gson gson = new GsonBuilder().create();
             news = gson.fromJson(json,News.class);
             reader.close();
@@ -69,12 +72,12 @@ public class BackupHandler {
     private boolean lost = false;
     final static String TAG = "BackupHandler";
     public void backup(final News news){
-        Log.d(TAG,"Uploading" + news.newsID);
+        Log.d(TAG,"Uploading " + news.newsID);
         NewsUploadThread uploadThread = new NewsUploadThread(news);
         uploadThread.start();
     }
     public News revert(final String newsID){
-        Log.d(TAG,"Downloading" + newsID);
+        Log.d(TAG,"Downloading " + newsID);
         lost = false;
         NewsDownloadThread downloadThread = new NewsDownloadThread(newsID);
         downloadThread.start();
@@ -85,7 +88,10 @@ public class BackupHandler {
                 lost = true;
             }
         },waitTime);
-        while (!lost && downloadThread.news == null){ }
+        while (!lost && (downloadThread.news == null)){
+            Log.d("Downloading",newsID);
+        }
+        Log.d("Finish Download",newsID);
         return downloadThread.news;
     }
 }

@@ -99,7 +99,7 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
             @Override
             public void run() {
                 try {
-                    Log.d("RecordID",news.newsID);
+                    // Log.d("RecordID",news.newsID);
                     new FileHandler().store(news);
                     MainActivity.saver.addNews(news.category,news.newsID);
                 } catch (Exception e){

@@ -104,7 +104,7 @@ public class RecommendFragment extends Fragment {
                 News news = null;
                 src.recommend();
                 while ((news = src.next()) != null){
-                    Log.d("RecordID:",news.newsID);
+                    //Log.d("RecordID:",news.newsID);
                     newsList.add(news);
                 }
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();

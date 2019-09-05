@@ -323,6 +323,7 @@ public class MainActivity extends AppCompatActivity
         favorite.save();
         saver.save();
         new LoginDataSource().remoteUpdate(user);
+        new LoginDataSource().logout();
         super.onDestroy();
 
         unregisterReceiver(receiver);
