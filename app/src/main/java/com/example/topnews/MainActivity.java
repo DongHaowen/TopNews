@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -35,8 +36,11 @@ import android.widget.Toast;
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
+import com.example.topnews.data.LoginDataSource;
+import com.example.topnews.data.model.LoggedInUser;
 import com.example.topnews.fragment.LocalFragment;
 import com.example.topnews.fragment.NewsFragment;
+import com.example.topnews.ui.login.LoginActivity;
 import com.example.topnews.utils.GetWidth;
 import com.example.topnews.utils.RecordHandler;
 import com.example.topnews.utils.StateSaver;
@@ -44,8 +48,6 @@ import com.example.topnews.utils.UIModeUtil;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
-
-import jackmego.com.jieba_android.JiebaSegmenter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity
     ImageView shadeLeft;
     ImageView shadeRight;
     private Toolbar toolbar;
+    private BroadcastReceiver webListener;
+    private NavigationView naviView;
 
     private BroadcastReceiver receiver;
 
@@ -70,8 +74,9 @@ public class MainActivity extends AppCompatActivity
 
     final static int REQUEST_CODE = 1;
 
-    public final static RecordHandler history = new RecordHandler("history");
-    public final static RecordHandler favorite = new RecordHandler("favorite");
+    public static LoggedInUser user = LoggedInUser.defaultUser;
+    public static RecordHandler history = new RecordHandler("history");
+    public static RecordHandler favorite = new RecordHandler("favorite");
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
@@ -81,6 +86,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -94,7 +104,6 @@ public class MainActivity extends AppCompatActivity
         columnChange();
         base = this;
 
-        // JiebaSegmenter.init(this);
     }
 
     @Override
@@ -113,15 +122,32 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void setWebListener(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        webListener = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("WebChange","WebChange");
+                columnChange();
+            }
+        };
+        registerReceiver(webListener,filter);
+    }
+
     private void setListener(){
         IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d("TimeClick","Save all");
                 String action = intent.getAction();
                 if(action.equals(Intent.ACTION_TIME_TICK)) {
                     history.save();
                     favorite.save();
+                    new LoginDataSource().remoteUpdate(user);
                 }
             }
         };
@@ -137,6 +163,7 @@ public class MainActivity extends AppCompatActivity
         viewPager = findViewById(R.id.view_pager);
         shadeLeft = findViewById(R.id.shade_left);
         shadeRight = findViewById(R.id.shade_right);
+        naviView = findViewById(R.id.nav_view);
 
         buttonMoreColumns.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +186,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-        toolbar.setTitle("Odd News");
+        toolbar.setTitle("异闻录");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -295,11 +322,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         history.save();
         favorite.save();
-        saver.save();;
+        saver.save();
+        new LoginDataSource().remoteUpdate(user);
+        super.onDestroy();
+
         unregisterReceiver(receiver);
+        if(webListener != null)
+            unregisterReceiver(webListener);
     }
 
     @Override
@@ -356,8 +387,12 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent();
             intent.setClass(getBaseContext(), HistoryActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_tools) {
+        } else if (id == R.id.nav_login) {
             Log.d(NAVI_TAG, "Tools");
+            Log.d(NAVI_TAG,"History");
+            Intent intent = new Intent();
+            intent.setClass(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.day_mode) {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             UIModeUtil.getInstance().setMode(1);
@@ -371,5 +406,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setUser(){
+        TextView view = findViewById(R.id.user_name);
+        if(user != LoggedInUser.defaultUser)
+            view.setText(user.getUserId());
+        else
+            view.setText("本地用户");
+
     }
 }

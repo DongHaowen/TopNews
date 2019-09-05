@@ -11,16 +11,30 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">本地用户</string>
+    <string name="nav_header_subtitle">向往美好的新闻。</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="menu_search">搜索</string>
     <string name="menu_favorite">收藏</string>
     <string name="menu_history">历史</string>
-    <string name="menu_tools">登录</string>
+    <string name="menu_login">登录</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_log_in">Log in</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_log_out">Log out</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="signup_failed">"Sign up failed"</string>
+
     <string name="day_mode">白天</string>
     <string name="night_mode">黑夜</string>
 </resources>
