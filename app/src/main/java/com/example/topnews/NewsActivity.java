@@ -249,7 +249,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
         viewPager = findViewById(R.id.result_view_pager);
         viewPager.setCurrentItem(0);
         LinearLayout layout = findViewById(R.id.content_record_layout);
-        layout.setBackgroundColor(getResources().getColor(R.color.title_text_color));
+        layout.setBackgroundColor(getResources().getColor(R.color.activity_bg_color));
         TextView textView = findViewById(R.id.record_title);
         textView.setText("相关推荐");
         textView.setTextSize(18);

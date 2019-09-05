@@ -114,10 +114,10 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
             viewHolder.publishTime.setTextColor(Color.GRAY);
             viewHolder.itemAbstract.setTextColor(Color.GRAY);
         }else {
-            viewHolder.itemTitle.setTextColor(Color.BLACK);
-            viewHolder.itemSource.setTextColor(Color.BLACK);
-            viewHolder.publishTime.setTextColor(Color.BLACK);
-            viewHolder.itemAbstract.setTextColor(Color.BLACK);
+            viewHolder.itemTitle.setTextColor(activity.getResources().getColor(R.color.default_text));
+            viewHolder.itemSource.setTextColor(activity.getResources().getColor(R.color.default_text));
+            viewHolder.publishTime.setTextColor(activity.getResources().getColor(R.color.default_text));
+            viewHolder.itemAbstract.setTextColor(activity.getResources().getColor(R.color.default_text));
         }
         viewHolder.itemTitle.setText(news.title);
         viewHolder.itemSource.setText(news.publisher);
