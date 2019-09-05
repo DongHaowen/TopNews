@@ -134,8 +134,9 @@ public class LoginActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Log Out","Begin");
                 new LoginDataSource().logout();
-                onDestroy();
+                finish();
             }
         });
     }

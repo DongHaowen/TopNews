@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -36,7 +37,7 @@ public class LoginDataSource {
             bundle.setItem(WebPackage.DATA_ID,username);
             bundle.setItem(WebPackage.DATA_PASS,password);
             userClient.setWebPackage(bundle);
-            userClient.run();
+            userClient.start();
 
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -44,10 +45,10 @@ public class LoginDataSource {
                 public void run() {
                     lost = true;
                 }
-            }, 3000);
+            }, waitTime);
 
             while (!lost && userClient.getResponse() == null){
-                wait();
+
             }
 
             WebPackage response = userClient.getResponse();
@@ -76,7 +77,7 @@ public class LoginDataSource {
             bundle.setItem(WebPackage.DATA_ID,username);
             bundle.setItem(WebPackage.DATA_PASS,password);
             userClient.setWebPackage(bundle);
-            userClient.run();
+            userClient.start();
 
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -84,10 +85,10 @@ public class LoginDataSource {
                 public void run() {
                     lost = true;
                 }
-            }, 3000);
+            }, waitTime);
 
             while (!lost && userClient.getResponse() == null){
-                wait();
+
             }
 
             WebPackage response = userClient.getResponse();
@@ -113,7 +114,7 @@ public class LoginDataSource {
         bundle.setItem(WebPackage.DATA_OP,WebPackage.OP_GET_MODIFY);
         bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
         userClient.setWebPackage(bundle);
-        userClient.run();
+        userClient.start();
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -121,10 +122,10 @@ public class LoginDataSource {
             public void run() {
                 lost = true;
             }
-        }, 3000);
+        }, waitTime);
         try {
             while (!lost && userClient.getResponse() == null) {
-                wait();
+
             }
             return Long.valueOf(userClient.getResponse().getString(WebPackage.OP_GET_MODIFY));
         } catch (Exception e){
@@ -136,35 +137,47 @@ public class LoginDataSource {
     private void localToRemote(){
         Log.d(TAG,"Local to Remote");
         reset();
-        UserClient userClient;
-        WebPackage bundle;
 
-        userClient = new UserClient();
-        bundle = new WebPackage();
-        bundle.setItem(WebPackage.DATA_OP,WebPackage.OP_UPDATE_MODIFY);
-        bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
-        bundle.setItem(WebPackage.DATA_EXTRA,String.valueOf(MainActivity.history.getModifyTime()));
-        userClient.setWebPackage(bundle);
-        userClient.start();
+        UserClient userClient1 = new UserClient();
+        WebPackage bundle1 = new WebPackage();
+        bundle1.setItem(WebPackage.DATA_OP,WebPackage.OP_UPDATE_MODIFY);
+        bundle1.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
+        bundle1.setItem(WebPackage.DATA_EXTRA,String.valueOf(MainActivity.history.getModifyTime()));
+        userClient1.setWebPackage(bundle1);
+        userClient1.start();
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        userClient = new UserClient();
-        bundle = new WebPackage();
-        bundle.setItem(WebPackage.DATA_OP,WebPackage.OP_UPDATE_HISTORY);
-        bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
-        bundle.setItem(WebPackage.DATA_EXTRA,String.valueOf(gson.toJson(MainActivity.history,RecordHandler.class)));
-        userClient.setWebPackage(bundle);
-        userClient.start();
+        UserClient userClient2 = new UserClient();
+        WebPackage bundle2 = new WebPackage();
+        bundle2.setItem(WebPackage.DATA_OP,WebPackage.OP_UPDATE_HISTORY);
+        bundle2.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
+        bundle2.setItem(WebPackage.DATA_EXTRA,String.valueOf(gson.toJson(MainActivity.history,RecordHandler.class)));
+        userClient2.setWebPackage(bundle2);
+        userClient2.start();
 
-        userClient = new UserClient();
-        bundle = new WebPackage();
-        bundle.setItem(WebPackage.DATA_OP,WebPackage.OP_UPDATE_FAVORITE);
-        bundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
-        bundle.setItem(WebPackage.DATA_EXTRA,String.valueOf(gson.toJson(MainActivity.favorite,RecordHandler.class)));
-        userClient.setWebPackage(bundle);
-        userClient.start();
+        UserClient userClient3 = new UserClient();
+        WebPackage bundle3 = new WebPackage();
+        bundle3.setItem(WebPackage.DATA_OP,WebPackage.OP_UPDATE_FAVORITE);
+        bundle3.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
+        bundle3.setItem(WebPackage.DATA_EXTRA,String.valueOf(gson.toJson(MainActivity.favorite,RecordHandler.class)));
+        userClient3.setWebPackage(bundle3);
+        userClient3.start();
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                lost = true;
+            }
+        },waitTime);
+
+        while (!lost && (userClient1.getResponse() == null || userClient2.getResponse() == null
+                || userClient3.getResponse() == null)){
+
+        }
+        Log.d(TAG,"Finished Update.");
     }
 
     private void remoteToLocal(){
@@ -176,7 +189,7 @@ public class LoginDataSource {
         hisBundle.setItem(WebPackage.DATA_OP,WebPackage.OP_GET_HISTORY);
         hisBundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
         hisClient.setWebPackage(hisBundle);
-        hisClient.run();
+        hisClient.start();
 
 
         UserClient favClient = new UserClient();
@@ -184,7 +197,7 @@ public class LoginDataSource {
         favBundle.setItem(WebPackage.DATA_OP,WebPackage.OP_GET_FAVORITE);
         favBundle.setItem(WebPackage.DATA_ID,MainActivity.user.getUserId());
         favClient.setWebPackage(favBundle);
-        favClient.run();
+        favClient.start();
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -192,28 +205,43 @@ public class LoginDataSource {
             public void run() {
                 lost = true;
             }
-        }, 3000);
+        }, 2*waitTime);
         try {
             while (!lost && (hisClient.getResponse() == null || favClient.getResponse() == null) ) {
-                wait();
+
             }
             if(lost) throw new Exception();
+            Log.d(TAG,"Get Client");
             String hisValue = hisClient.getResponse().getString(WebPackage.OP_GET_HISTORY);
-            String favValue = hisClient.getResponse().getString(WebPackage.OP_GET_FAVORITE);
+            String favValue = favClient.getResponse().getString(WebPackage.OP_GET_FAVORITE);
+            Log.d(TAG,hisValue);
+            Log.d(TAG,favValue);
             if(hisValue != null) {
                 MainActivity.history = gson.fromJson(hisValue, RecordHandler.class);
-                MainActivity.history.save();
+                Vector<String> records = MainActivity.history.records;
+
+                for (int i = 0 ; i < records.size() ; ++i){
+                    Log.d(TAG,records.get(i));
+                }
             }else {
                 MainActivity.history = new RecordHandler("history");
                 MainActivity.history.save();
             }
+            Log.d(TAG,"History Pull Finished.");
             if(favValue != null) {
                 MainActivity.favorite = gson.fromJson(favValue, RecordHandler.class);
                 MainActivity.favorite.save();
+                Vector<String> records = MainActivity.favorite.records;
+
+                for (int i = 0 ; i < records.size() ; ++i){
+                    Log.d(TAG,records.get(i));
+                }
             } else {
                 MainActivity.history = new RecordHandler("history");
                 MainActivity.history.save();
             }
+            Log.d(TAG,"History Pull Finished.");
+            Log.d(TAG,"Remote Pull Finished.");
             return ;
         } catch (Exception e){
             e.printStackTrace();
