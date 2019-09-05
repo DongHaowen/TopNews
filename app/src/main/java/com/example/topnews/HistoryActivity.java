@@ -14,6 +14,7 @@ import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.fragment.RecordFragment;
 import com.example.topnews.fragment.ResultFragment;
 import com.example.topnews.utils.RecordAdpter;
+import com.example.topnews.utils.UIModeUtil;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,9 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UIModeUtil.getInstance().changeModeUI(this);
+
         setContentView(R.layout.content_record);
         initView();
     }

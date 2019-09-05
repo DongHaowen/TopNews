@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
 import com.example.topnews.bean.Category;
 import com.example.topnews.fragment.ResultFragment;
+import com.example.topnews.utils.UIModeUtil;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,9 @@ public class SearchResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UIModeUtil.getInstance().changeModeUI(this);
+
         setContentView(R.layout.content_record);
         keywords = getIntent().getStringExtra("keywords");
         TextView view = findViewById(R.id.record_title);

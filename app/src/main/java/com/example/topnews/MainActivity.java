@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -18,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,6 +44,7 @@ import com.example.topnews.ui.login.LoginActivity;
 import com.example.topnews.utils.GetWidth;
 import com.example.topnews.utils.RecordHandler;
 import com.example.topnews.utils.StateSaver;
+import com.example.topnews.utils.UIModeUtil;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
+    private int mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,8 +99,22 @@ public class MainActivity extends AppCompatActivity
         columnChange();
         base = this;
 
-        // JiebaSegmenter.init(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int uiMode = getResources().getConfiguration().uiMode;
+        int dayNightUiMode = uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        if (dayNightUiMode == Configuration.UI_MODE_NIGHT_NO) {
+            mDayNightMode = AppCompatDelegate.MODE_NIGHT_NO;
+        } else if (dayNightUiMode == Configuration.UI_MODE_NIGHT_YES) {
+            mDayNightMode = AppCompatDelegate.MODE_NIGHT_YES;
+        } else {
+            mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
+        }
     }
 
     private void setWebListener(){
@@ -369,6 +388,14 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent();
             intent.setClass(getBaseContext(), LoginActivity.class);
             startActivity(intent);
+        } else if (id == R.id.day_mode) {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            UIModeUtil.getInstance().setMode(1);
+            recreate();
+        } else if (id == R.id.night_mode) {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            UIModeUtil.getInstance().setMode(2);
+            recreate();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

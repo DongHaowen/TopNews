@@ -2,6 +2,7 @@ package com.example.topnews;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -12,6 +13,7 @@ import com.example.topnews.adapter.ChannelAdapter;
 import com.example.topnews.bean.Category;
 import com.example.topnews.bean.CategoryManage;
 import com.example.topnews.helper.ItemDragHelperCallback;
+import com.example.topnews.utils.UIModeUtil;
 
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class ChannelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UIModeUtil.getInstance().changeModeUI(this);
+
         setContentView(R.layout.activity_channel);
 
         rv = findViewById(R.id.recycler);

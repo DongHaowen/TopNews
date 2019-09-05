@@ -34,4 +34,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="signup_failed">"Sign up failed"</string>
+
+    <string name="day_mode">白天</string>
+    <string name="night_mode">黑夜</string>
 </resources>
