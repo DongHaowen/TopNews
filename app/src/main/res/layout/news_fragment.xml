@@ -31,7 +31,7 @@
         app:srlEnablePreviewInEditMode="true">
         <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->
         <!--srlEnablePreviewInEditMode 可以开启和关闭预览功能-->
-        <com.scwang.smartrefresh.header.BezierCircleHeader
+        <com.scwang.smartrefresh.header.DropBoxHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <com.example.topnews.view.HeadListView
@@ -42,7 +42,7 @@
             android:dividerHeight="0dp"
             android:fadingEdge="none"
             android:scrollbars="none" />
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
