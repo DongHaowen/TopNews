@@ -18,16 +18,14 @@ import java.util.Set;
 import java.util.Vector;
 
 public class RecordHandler {
-    Vector<String> records  = new Vector<>();
+    public Vector<String> records  = new Vector<>();
     private final static String TAG = "RecordHandler";
     private final String home = "/data/user/0/com.example.topnews/cache/";
     private String type;
     private File recordFile;
-    private boolean modify = false;
     private boolean initial = true;
 
     public RecordHandler(final String type){
-        modify = true;
         String thome = home + MainActivity.user.getUserId() + "/";
         File homedir = new File(thome);
         if(!homedir.exists()) homedir.mkdirs();
@@ -37,7 +35,6 @@ public class RecordHandler {
     }
 
     public void updateUser(){
-        modify = true;
         records.clear();
         String thome = home + MainActivity.user.getUserId() + "/";
         File homedir = new File(thome);
@@ -49,25 +46,21 @@ public class RecordHandler {
         if(records.contains(newsID)) return;
         // Log.d("Record Add", newsID);
         records.add(newsID);
-        modify = true;
     }
 
     public void remove(final String newsID){
         if(records.contains(newsID)) records.remove(newsID);
     }
     public void save(){
-        if(!modify) return;
         try {
             Log.d(TAG,"Save"+recordFile.getAbsolutePath());
             recordFile.delete();
             recordFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(recordFile));
             for (String value: records){
-                // Log.d("Record Save.",value);
                 writer.write( value + "\n");
             }
             writer.close();
-            modify = false;
             initial = false;
         } catch (Exception e){
             e.printStackTrace();
@@ -78,7 +71,6 @@ public class RecordHandler {
             if(!recordFile.exists()){
                 // Log.d("Record Error","File Missing.");
                 records.clear();
-                modify = true;
                 return;
             }
             Log.d(TAG,"Load"+recordFile.getAbsolutePath());
@@ -89,7 +81,6 @@ public class RecordHandler {
                 // Log.d("Record Load.",records.lastElement());
             }
             reader.close();
-            modify = true;
         }catch (Exception e){
             e.printStackTrace();
         }
