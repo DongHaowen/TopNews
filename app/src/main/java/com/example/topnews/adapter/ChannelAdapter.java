@@ -436,6 +436,22 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition > toPosition) {
+            mMyChannelItems.get(fromPosition - 1).setId(toPosition);
+            for (int i = toPosition - 1; i < fromPosition - 1; i++) {
+                mMyChannelItems.get(i).setId(i + 2);
+            }
+        } else {
+            mMyChannelItems.get(fromPosition - 1).setId(toPosition);
+            for (int i = fromPosition; i < toPosition; i++) {
+                mMyChannelItems.get(i).setId(i);
+            }
+        }
+
+        for (Category item : mMyChannelItems) {
+            Log.d("channel", "onItemMove: " + item.name + " " + item.id);
+        }
+
         Category item = mMyChannelItems.get(fromPosition - COUNT_PRE_MY_HEADER);
         mMyChannelItems.remove(fromPosition - COUNT_PRE_MY_HEADER);
         mMyChannelItems.add(toPosition - COUNT_PRE_MY_HEADER, item);
