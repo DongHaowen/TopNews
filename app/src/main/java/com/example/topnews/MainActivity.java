@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity
                     recreate();
                 case Configuration.UI_MODE_NIGHT_YES:
                     // Night mode is active, we're at night!
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     recreate();
                 case Configuration.UI_MODE_NIGHT_UNDEFINED:
                     // We don't know what mode we're in, assume notnight
