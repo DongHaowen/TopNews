@@ -335,7 +335,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
 
 
 // url在微信、Facebook等平台中使用
-        oks.setUrl("http://sharesdk.cn");
+        oks.setUrl("http://"+MainActivity.host + ":8000/" + news.newsID + ".html");
 
         oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
             @Override
