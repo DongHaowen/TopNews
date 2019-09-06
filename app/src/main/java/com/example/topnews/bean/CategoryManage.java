@@ -62,8 +62,20 @@ public class CategoryManage {
      */
     public List<Category> getUserChannel() {
         StateSaver saver = MainActivity.saver;
-        if(!saver.load())
-            return defaultUserChannels;
+        if(!saver.load()) {
+            Vector<String> has = new Vector<>();
+            for (Category category: defaultUserChannels){
+                has.add(category.name);
+            }
+            MainActivity.saver.updateSection(has);
+            saver.save();
+            saver.load();
+            for(int i = 0 ; i < defaultUserChannels.size() ; ++i){
+                saver.setRank(defaultUserChannels.get(i).name, defaultUserChannels.get(i).orderId);
+            }
+            saver.save();
+            saver.load();
+        }
         List<Category> temp = new ArrayList<>();
         int index = 1;
         for (String type : saver.getSections()) {

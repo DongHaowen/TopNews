@@ -48,6 +48,7 @@ import com.example.topnews.utils.UIModeUtil;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         initView();
         columnChange();
         base = this;
+
 
     }
 
