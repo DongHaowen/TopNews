@@ -105,6 +105,7 @@ public class RecordFragment extends Fragment {
                 News temp = new FileHandler().load(newsID);
                 if(temp == null && !MainActivity.runLocal()){
                     temp = new BackupHandler().revert(newsID);
+                    new FileHandler().store(temp);
                 }
                 if(temp != null) newsList.add(temp);
             } catch (Exception e){
@@ -128,6 +129,7 @@ public class RecordFragment extends Fragment {
                 News temp = new FileHandler().load(newsID);
                 if(temp == null && !MainActivity.runLocal()){
                     temp = new BackupHandler().revert(newsID);
+                    new FileHandler().store(temp);
                 }
                 if(temp != null) newsList.add(temp);
             } catch (Exception e){
