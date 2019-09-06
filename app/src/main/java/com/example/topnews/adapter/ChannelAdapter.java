@@ -493,6 +493,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         for (Category category:mMyChannelItems){
             MainActivity.saver.setRank(category.name,category.id);
         }
+
+        for (Category item : mMyChannelItems) {
+            Log.d("channel", "onSaver: " + item.name + " " + item.id);
+        }
+
         for(Category category:mOtherChannelItems){
             MainActivity.saver.setRank(category.name,category.id);
         }

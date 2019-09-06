@@ -106,15 +106,16 @@ public class News {
 	}
 
 	public String getAbstract() {
-		String ret;
-		if (content.length() > 20) {
-			ret = content.substring(0, 20);
-			ret = ret + "...";
-		} else {
-			ret = content;
-			ret.replaceAll("\n", " ");
-		}
-		return ret;
+//		String ret;
+//		if (content.length() > 20) {
+//			ret = content.substring(0, 20);
+//			ret = ret + "...";
+//		} else {
+//			ret = content;
+//			ret.replaceAll("\n", " ");
+//		}
+//		return ret;
+		return content;
 	}
 
 	@Override
