@@ -7,7 +7,7 @@ import android.util.Log;
 public class UIModeUtil {
     private static UIModeUtil inst = new UIModeUtil();
 
-    private int mode;
+    public int mode;
 
     public void setMode(int mode) {
         this.mode = mode;
@@ -27,7 +27,7 @@ public class UIModeUtil {
 
 
     private UIModeUtil() {
-        this.mode = 0;
+        this.mode = 1;
     }
 
     public static UIModeUtil getInstance() {

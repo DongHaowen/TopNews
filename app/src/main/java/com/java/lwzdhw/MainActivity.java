@@ -410,12 +410,16 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.day_mode) {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            UIModeUtil.getInstance().setMode(1);
-            recreate();
+            if (UIModeUtil.getInstance().mode != 1) {
+                UIModeUtil.getInstance().setMode(1);
+                recreate();
+            }
         } else if (id == R.id.night_mode) {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            UIModeUtil.getInstance().setMode(2);
-            recreate();
+            if (UIModeUtil.getInstance().mode != 2) {
+                UIModeUtil.getInstance().setMode(2);
+                recreate();
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

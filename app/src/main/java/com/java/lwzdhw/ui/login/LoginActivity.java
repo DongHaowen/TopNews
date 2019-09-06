@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.java.lwzdhw.MainActivity;
 import com.java.lwzdhw.R;
 import com.java.lwzdhw.data.LoginDataSource;
 
@@ -39,7 +40,10 @@ public class LoginActivity extends AppCompatActivity {
         final Button signupButton = findViewById(R.id.signup);
         final Button logoutButton = findViewById(R.id.logout);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-        logoutButton.setEnabled(true);
+        if (MainActivity.base.runLocal())
+            logoutButton.setEnabled(false);
+        else
+            logoutButton.setEnabled(true);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -134,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("Log Out","Begin");
                 new LoginDataSource().logout();
+                Toast.makeText(getBaseContext(), "Log out", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff5f5f5"
+    android:background="@color/activity_bg_color"
     tools:context=".MainActivity">
 
     <scut.carson_ho.searchview.SearchView
@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:textSizeSearch="5dp"
-        app:textColorSearch="#9b9b9b"
+        app:textColorSearch="@color/default_text"
         app:textHintSearch="输入查询关键字"
         app:searchBlockHeight="150"
-        app:searchBlockColor="#ffffff"
-
+        app:searchBlockColor="@color/activity_bg_color"
+        android:background="@color/activity_bg_color"
         />
 </RelativeLayout>
