@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="40.0dp">
 
-            <com.example.topnews.view.ColumnHorizontalScrollView
+            <com.java.lwzdhw.view.ColumnHorizontalScrollView
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="40.0dp"
@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40.0dp"></LinearLayout>
 
-            </com.example.topnews.view.ColumnHorizontalScrollView>
+            </com.java.lwzdhw.view.ColumnHorizontalScrollView>
 
             <ImageView
                 android:id="@+id/shade_left"

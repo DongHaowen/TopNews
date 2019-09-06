@@ -34,7 +34,7 @@
         <com.scwang.smartrefresh.header.DropBoxHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <com.example.topnews.view.HeadListView
+        <com.java.lwzdhw.view.HeadListView
             android:id="@+id/mListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
