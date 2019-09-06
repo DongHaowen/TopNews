@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
     public static String host = "183.172.242.212";
 
-    private int mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
+    private int mDayNightMode = AppCompatDelegate.MODE_NIGHT_NO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
