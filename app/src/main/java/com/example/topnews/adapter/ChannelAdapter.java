@@ -402,6 +402,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         Category item = mOtherChannelItems.get(startPosition);
         mOtherChannelItems.remove(startPosition);
+        item.setId(mMyChannelItems.size() + 1);
         mMyChannelItems.add(item);
         return position;
     }
