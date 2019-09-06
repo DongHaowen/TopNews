@@ -91,6 +91,7 @@ public class BackupHandler {
         },waitTime);
         while (!lost && (downloadThread.news == null)){
             Log.d("Downloading",newsID);
+            double r = Math.random()*Math.random();
         }
         Log.d("Finish Download",newsID);
         return downloadThread.news;

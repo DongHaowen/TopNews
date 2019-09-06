@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.example.topnews.adapter.NewsFragmentPagerAdapter;
@@ -127,7 +128,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
                     continue;
                 try {
                     TextSliderView sliderView = new TextSliderView(this);
-                    sliderView.image(image).setScaleType(TextSliderView.ScaleType.Fit);
+                    sliderView.image(image).setScaleType(TextSliderView.ScaleType.CenterInside);
                     slider.addSlider(sliderView);
                     loaded.add(image.getName());
                 } catch (Exception e) {
@@ -142,7 +143,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
             return;
         }
 
-        slider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        slider.setPresetTransformer(SliderLayout.Transformer.ZoomIn);
         slider.setCustomAnimation(new DescriptionAnimation());
         slider.setDuration(0);
         slider.stopAutoCycle();
