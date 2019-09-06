@@ -18,6 +18,7 @@ import com.java.lwzdhw.adapter.NewsAdapter;
 import com.java.lwzdhw.bean.News;
 import com.java.lwzdhw.bean.Page;
 import com.java.lwzdhw.utils.GetDate;
+import com.java.lwzdhw.utils.MaskHandler;
 import com.java.lwzdhw.utils.ServerHandler;
 import com.java.lwzdhw.view.HeadListView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -101,7 +102,13 @@ public class ResultFragment extends Fragment {
                 try {
                     page = serverHandler.getPage();
                     news = page.data;
-                    for (int i = newsList.size(); i < news.length; i++) {
+                    int masked = 0;
+                    for (int i = 0 ; i < news.length; i++) {
+                        if(newsList.contains(news[i])) continue;
+                        if(masked < 5 && !MaskHandler.getInstance().check(news[i])){
+                            masked ++;
+                            continue;
+                        }
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();
@@ -125,6 +132,7 @@ public class ResultFragment extends Fragment {
                 serverHandler.setSize(10);
                 if (keywords != null) serverHandler.setWords(keywords);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
+
                 while (page == null) {
                     page = serverHandler.getPage();
                     try {
@@ -135,6 +143,14 @@ public class ResultFragment extends Fragment {
                 }
                 news = page.data;
                 newsList = new ArrayList<>(Arrays.asList(news));
+                int masked = 0;
+                for (int i = 0 ; i < newsList.size() ; ++i){
+                    if(masked > 5) break;
+                    if(!MaskHandler.getInstance().check(newsList.get(i))){
+                        newsList.remove(i);
+                        masked ++;
+                    }
+                }
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
             }
         }).start();

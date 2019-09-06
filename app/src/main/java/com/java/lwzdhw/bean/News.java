@@ -126,5 +126,14 @@ public class News {
 	public int hashCode() {
 		return newsID.hashCode();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj.getClass() == News.class){
+			News temp = (News) obj;
+			return newsID.equals(temp.newsID);
+		}
+		return super.equals(obj);
+	}
 }
 
