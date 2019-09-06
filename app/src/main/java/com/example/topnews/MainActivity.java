@@ -318,13 +318,22 @@ public class MainActivity extends AppCompatActivity
     };
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        history.save();
+        favorite.save();
+        saver.save();
+        new LoginDataSource().remoteUpdate(user);
+    }
+
+    @Override
     protected void onDestroy() {
+        super.onDestroy();
         history.save();
         favorite.save();
         saver.save();
         new LoginDataSource().remoteUpdate(user);
         new LoginDataSource().logout();
-        super.onDestroy();
 
         unregisterReceiver(receiver);
         if(webListener != null)

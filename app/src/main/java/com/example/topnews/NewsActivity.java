@@ -27,6 +27,7 @@ import com.example.topnews.bean.News;
 import com.example.topnews.fragment.RecommendFragment;
 import com.example.topnews.utils.ImageHandler;
 import com.example.topnews.utils.RecommendAdpter;
+import com.example.topnews.utils.ShareHandler;
 import com.example.topnews.utils.UIModeUtil;
 import com.google.gson.GsonBuilder;
 
@@ -225,6 +226,7 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
                     }
                     MainActivity.favorite.save();
                 } else if (menuItem.getItemId() == R.id.share_btn) {
+                    new ShareHandler().share(news);
                     showShare();
                 }
                 return false;
