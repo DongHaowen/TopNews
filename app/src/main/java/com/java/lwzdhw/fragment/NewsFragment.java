@@ -145,7 +145,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void run() {
                 serverHandler = new ServerHandler();
-                serverHandler.setSize(newsListSize + 10 * moreTimes);
+                serverHandler.setSize(newsList.size() + 10);
                 serverHandler.setCategories(text);
                 serverHandler.setEndDate(GetDate.getCurrentDate());
                 try {
@@ -194,6 +194,15 @@ public class NewsFragment extends Fragment {
                 news = page.data;
                 Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
                 newsList = new ArrayList<>(Arrays.asList(news));
+                Collections.shuffle(newsList);
+                int masked = 0;
+                for (int i = 0 ; i < newsList.size() ; ++i){
+                    if(masked > 15) break;
+                    if(!MaskHandler.getInstance().check(newsList.get(i))){
+                        newsList.remove(i);
+                        masked ++;
+                    }
+                }
                 newsList = (ArrayList<News>) Sample.createRandomList(newsList, 10);
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
             }

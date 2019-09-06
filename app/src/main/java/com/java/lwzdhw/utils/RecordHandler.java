@@ -48,7 +48,7 @@ public class RecordHandler {
     }
     public void save(){
         try {
-            Log.d(TAG,"Save"+recordFile.getAbsolutePath());
+            // Log.d(TAG,"Save"+recordFile.getAbsolutePath());
             recordFile.delete();
             recordFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(recordFile));
