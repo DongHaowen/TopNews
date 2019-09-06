@@ -17,6 +17,7 @@ import com.java.lwzdhw.adapter.NewsAdapter;
 import com.java.lwzdhw.bean.News;
 import com.java.lwzdhw.bean.Page;
 import com.java.lwzdhw.utils.GetDate;
+import com.java.lwzdhw.utils.MaskHandler;
 import com.java.lwzdhw.utils.Sample;
 import com.java.lwzdhw.utils.ServerHandler;
 import com.java.lwzdhw.view.HeadListView;
@@ -26,6 +27,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class NewsFragment extends Fragment {
     private final static String TAG = "NewsFragment";
@@ -121,6 +123,15 @@ public class NewsFragment extends Fragment {
                 news = page.data;
                 Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
                 newsList = new ArrayList<>(Arrays.asList(news));
+                Collections.shuffle(newsList);
+                int masked = 0;
+                for (int i = 0 ; i < newsList.size() ; ++i){
+                    if(masked > 15) break;
+                    if(!MaskHandler.getInstance().check(newsList.get(i))){
+                        newsList.remove(i);
+                        masked ++;
+                    }
+                }
                 newsList = (ArrayList<News>) Sample.createRandomList(newsList, 10);
                 handler.obtainMessage(SET_NEWSLIST).sendToTarget();
                 refreshLayout.finishRefresh();
@@ -141,7 +152,14 @@ public class NewsFragment extends Fragment {
                     page = serverHandler.getPage();
                     news = page.data;
                     Log.d(TAG, "run: " + categoryId + " " + text  + " " + news.length + " " + moreTimes);
-                    for (int i = newsList.size(); i < news.length; i++) {
+                    int masked = 0;
+                    for (int i = 0; i < news.length; i++) {
+                        // Log.d("TryHas",news[i].title);
+                        if(newsList.contains(news[i])) continue;
+                        if(masked < 5 && !MaskHandler.getInstance().check(news[i])){
+                            masked ++;
+                            continue;
+                        }
                         newsList.add(news[i]);
                     }
                     handler.obtainMessage(MORE_NEWS).sendToTarget();

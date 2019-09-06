@@ -8,6 +8,7 @@ import java.util.Map;
 public class Sample {
     public static List createRandomList(List list, int n) {
         // TODO Auto-generated method stub
+        if(list.size() < n) n = list.size();
         Map map = new HashMap();
         List listNew = new ArrayList();
         if (list.size() <= n) {
