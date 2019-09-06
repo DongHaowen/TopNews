@@ -148,6 +148,7 @@ public class ResultFragment extends Fragment {
                     detail_loading.setVisibility(View.GONE);
 //                    if (adapter == null) {
                     adapter = new NewsAdapter(newsList, activity);
+                    adapter.setGray();
 //                    }
                     int currentPos = headListView.getFirstVisiblePosition();
                     headListView.setAdapter(adapter);

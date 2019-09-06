@@ -100,7 +100,8 @@ public class NewsAdapter extends BaseAdapter implements SectionIndexer, HeadList
                 try {
                     // Log.d("RecordID",news.newsID);
                     new FileHandler().store(news);
-                    MainActivity.saver.addNews(news.category,news.newsID);
+                    if(MainActivity.saver.state.hasSection(news.category))
+                        MainActivity.saver.addNews(news.category,news.newsID);
                 } catch (Exception e){
 
                 }
