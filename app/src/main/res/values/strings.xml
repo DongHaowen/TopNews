@@ -15,7 +15,7 @@
     <string name="nav_header_subtitle">向往美好的新闻。</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="menu_search">搜索</string>
+    <string name="menu_block">屏蔽</string>
     <string name="menu_favorite">收藏</string>
     <string name="menu_history">历史</string>
     <string name="menu_login">登录</string>

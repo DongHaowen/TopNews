@@ -41,6 +41,7 @@
         <activity android:name="com.java.lwzdhw.SearchResultActivity"/>
         <activity android:name="com.java.lwzdhw.FavoriteActivity"/>
         <activity android:name="com.java.lwzdhw.HistoryActivity"/>
+        <activity android:name=".BlockActivity"/>
     </application>
 
 </manifest>

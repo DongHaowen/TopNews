@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_search) {
             // Handle the camera action
             Intent intent = new Intent();
-            intent.setClass(getBaseContext(),SearchActivity.class);
+            intent.setClass(getBaseContext(),BlockActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_favorite) {
             Log.d(NAVI_TAG,"Favorite");
