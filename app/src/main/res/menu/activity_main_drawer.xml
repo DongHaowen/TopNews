@@ -5,9 +5,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_block"
+            android:id="@+id/nav_search"
             android:icon="@mipmap/ic_search_white_36dp"
-            android:title="@string/menu_block" />
+            android:title="@string/menu_search" />
         <item
             android:id="@+id/nav_favorite"
             android:icon="@drawable/star_empty"
@@ -22,7 +22,7 @@
             android:title="@string/menu_login" />
         <item
             android:id="@+id/nav_mask"
-            android:icon="@mipmap/ic_account_box_black_48dp"
+            android:icon="@mipmap/ic_block_black_48dp"
             android:title="@string/menu_mask" />
     </group>
 

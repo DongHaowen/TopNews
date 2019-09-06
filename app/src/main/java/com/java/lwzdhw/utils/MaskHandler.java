@@ -26,13 +26,26 @@ public class MaskHandler {
         badWords.clear();
     }
 
+    public String getString() {
+        String str =  "";
+        if (badWords.size() > 0) {
+            for (String s : badWords) {
+                str = str + s + " ";
+            }
+        }
+        str = str.trim();
+        return str;
+    }
+
     public boolean check(final News news){
         if(badWords.size() == 0) return true;
         News.ScoreWord[] keywords = news.getKeywords();
         Vector<String> vector = new Vector<>();
         for (int i = 0 ; i < keywords.length ; ++i){
-            if (keywords[i].score > minThreshold && badWords.contains(keywords[i].word))
-                return false;
+            for(String word:badWords){
+                if(keywords[i].score < minThreshold) continue;
+                if(keywords[i].word.contains(word)) return false;
+            }
         }
         return true;
     }

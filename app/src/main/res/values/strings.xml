@@ -36,4 +36,5 @@
 
     <string name="day_mode">白天</string>
     <string name="night_mode">黑夜</string>
+    <string name="menu_search">搜索</string>
 </resources>
