@@ -78,4 +78,6 @@ dependencies {
     implementation 'com.github.bluejamesbond:textjustify-android:2.1.0'
 
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.12'
+
+    implementation 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
 }
