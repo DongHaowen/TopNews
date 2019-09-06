@@ -1,9 +1,12 @@
 package com.example.topnews.bean;
 
+import android.util.Log;
+
 import com.example.topnews.MainActivity;
 import com.example.topnews.utils.StateSaver;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
@@ -64,9 +67,20 @@ public class CategoryManage {
         List<Category> temp = new ArrayList<>();
         int index = 1;
         for (String type : saver.getSections()) {
-            temp.add(new Category(index,type,saver.getRank(type),1));
+            temp.add(new Category(saver.getRank(type),type,saver.getRank(type),1));
+            Log.d("CategoryManage", "getUserChannel: " + temp.get(index - 1));
             index ++;
         }
+
+        Comparator<Category> cmp = new Comparator<Category>() {
+            @Override
+            public int compare(Category o1, Category o2) {
+                return o1.id - o2.id;
+            }
+        };
+
+        temp.sort(cmp);
+
         return temp;
     }
 
