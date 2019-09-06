@@ -2,6 +2,7 @@ package com.example.topnews;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -326,10 +327,12 @@ public class NewsActivity extends AppCompatActivity implements ViewPagerEx.OnPag
                     oks.setImagePath(img.getAbsolutePath());
                     break;
                 } catch (Exception e) {
+                    oks.setImageData(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
                     e.printStackTrace();
                 }
             }
         } catch (Exception e) {
+            oks.setImageData(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
             e.printStackTrace();
         }
 

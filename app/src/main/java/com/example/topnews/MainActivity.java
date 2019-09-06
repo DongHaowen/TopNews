@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     public final static StateSaver saver = new StateSaver();
     public static MainActivity base;
 
-    public static String host = "192.168.8.105";
+    public static String host = "183.172.242.212";
 
     private int mDayNightMode = AppCompatDelegate.MODE_NIGHT_AUTO;
 
