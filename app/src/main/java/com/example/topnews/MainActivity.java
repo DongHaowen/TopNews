@@ -48,6 +48,7 @@ import com.example.topnews.utils.UIModeUtil;
 import com.example.topnews.view.ColumnHorizontalScrollView;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -97,10 +98,10 @@ public class MainActivity extends AppCompatActivity
         channelWidth = screenWidth / 7;
 
         setListener();
+        setWebListener();
         initView();
         columnChange();
         base = this;
-
     }
 
     @Override
@@ -121,13 +122,23 @@ public class MainActivity extends AppCompatActivity
 
     private void setWebListener(){
         IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        // filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         webListener = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d("WebChange","WebChange");
+                Toast toast;
+                if(isNetworkConnected()) {
+                    toast = Toast.makeText(getApplicationContext(), "Network Connected",
+                            Toast.LENGTH_LONG);
+                }else{
+                    toast = Toast.makeText(getApplicationContext(), "Network Disconnected",
+                            Toast.LENGTH_LONG);
+                }
+                toast.setGravity(Gravity.CENTER|Gravity.BOTTOM, 0, 50);
+                toast.show();
                 columnChange();
             }
         };

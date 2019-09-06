@@ -20,6 +20,7 @@ public class StateSaver {
     public State state = new State();
 
     public void setRank(final String type, final int r){
+        Log.d("Put",type);
         state.rank.put(type,r);
     }
     public int getRank(final String type){
